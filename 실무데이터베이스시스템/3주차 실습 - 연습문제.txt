@@ -1,0 +1,39 @@
+-----> (연습문제)이번에는 부서별로 해보자
+SELECT deptno AS "부서번호",
+       COUNT(empno) AS "인원수",
+       AVG(sal) AS "평균급여액",
+       MAX(sal) AS "최고급여액",
+       MIN(sal) AS "최저급여액",
+       SUM(sal) AS "급여합계"
+FROM emp
+GROUP BY deptno;
+
+-- 다음의 두 질의를 비교해보라*
+
+최고급여가 3000보다 큰 부서에 대한 평균급여를 구하려면???
+다음과 같이 하는 함정에 빠지지 말자!!!
+
+SELECT DEPTNO, AVG(SAL)
+FROM EMP
+WHERE MAX(SAL) >=3000
+GROUP BY DEPTNO;
+
+
+---->에러!!!!  where절은 모든행에 대하여 적용됨. 
+-----> 최고급여가 3000 이상인 부서  
+-----> DEPTNO  HAVING MAX(SAL) >=3000;
+---->(연습문제)집계함수에 대한 제약조건은 HAVING절을 쓰자!
+  SELECT DEPTNO,
+       SUM(SAL) AS "급여합계",
+       AVG(SAL) AS "평균급여액"
+FROM EMP
+GROUP BY DEPTNO
+HAVING SUM(SAL) >= 10000 AND AVG(SAL) >= 3000;
+--- 중첩 그룹함수
+-- (연습문제) 평균급여가 최고인 부서의 급여는?
+SELECT DEPTNO, MAX(AVG_SAL) AS "급여"
+FROM (
+    SELECT DEPTNO, AVG(SAL) AS AVG_SAL
+    FROM EMP
+    GROUP BY DEPTNO
+)

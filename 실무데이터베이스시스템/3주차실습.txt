@@ -1,0 +1,345 @@
+SCOTT>SELECT AVG(SAL), MAX(SAL), MIN(SAL), SUM(SAL)
+  2  FROM EMP
+  3  WHERE JOB LIKE 'SALES%';
+
+  AVG(SAL)   MAX(SAL)   MIN(SAL)   SUM(SAL)                                                                             
+---------- ---------- ---------- ----------                                                                             
+      1400       1600       1250       5600                                                                             
+
+SCOTT>SELECT COUNT(*)
+  2  FROM EMP;
+
+  COUNT(*)                                                                                                              
+----------                                                                                                              
+        15                                                                                                              
+
+SCOTT>SELECT COUNT(comm)
+  2  FROM EMP;
+
+COUNT(COMM)                                                                                                             
+-----------                                                                                                             
+          5                                                                                                             
+
+SCOTT>SELECT comm
+  2  FROM EMP
+  3  WHERE comm IS NOT NULL;
+
+      COMM                                                                                                              
+----------                                                                                                              
+      2000                                                                                                              
+       300                                                                                                              
+       500                                                                                                              
+      1400                                                                                                              
+         0                                                                                                              
+
+SCOTT>SELECT AVG(COMM)
+  2  FROM EMP;
+
+ AVG(COMM)                                                                                                              
+----------                                                                                                              
+       840                                                                                                              
+
+SCOTT>
+SCOTT>SELECT AVG(NVL(COMM,0))
+  2  FROM EMP;
+
+AVG(NVL(COMM,0))                                                                                                        
+----------------                                                                                                        
+             280                                                                                                        
+
+SCOTT>SELECT COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp;
+
+    인원수 평균급여액 최고급여액 최저급여액   급여합계                                                                  
+---------- ---------- ---------- ---------- ----------                                                                  
+        15 2098.33333       5000        800      31475                                                                  
+
+SCOTT>
+SCOTT>SELECT job 직책, COUNT(empno) "인원수", AVG(sal) "평균급여액",
+  2             MAX(sal) "최고급여액", MIN(sal) "최저급여액",
+  3             SUM(sal) "급여합계"
+  4  FROM emp
+  5  GROUP BY job;
+
+직책          인원수 평균급여액 최고급여액 최저급여액   급여합계                                                        
+--------- ---------- ---------- ---------- ---------- ----------                                                        
+CLERK              4     1037.5       1300        800       4150                                                        
+SALESMAN           4       1400       1600       1250       5600                                                        
+PRESIDENT          1       5000       5000       5000       5000                                                        
+MANAGER            4    2681.25       2975       2450      10725                                                        
+ANALYST            2       3000       3000       3000       6000                                                        
+
+SCOTT>SELECT DEPTNO 부서번호, JOB 직책 , COUNT(*) 인원수, ROUND(AVG(sal),1) 평균급여
+  2  FROM EMP
+  3  GROUP BY DEPTNO, JOB
+  4  ORDER BY DEPTNO, JOB;SELECT DEPTNO 부서번호, JOB 직책 , COUNT(*) 인원수, ROUND(AVG(sal),1) 평균급여
+  5  FROM EMP
+  6  GROUP BY DEPTNO, JOB
+  7  ORDER BY DEPTNO, JOB;
+ORDER BY DEPTNO, JOB;SELECT DEPTNO 부서번호, JOB 직책 , COUNT(*) 인원수, ROUND(AVG(sal),1) 평균급여
+                    *
+4행에 오류:
+ORA-00911: 문자가 부적합합니다 
+
+
+SCOTT>SELECT DEPTNO 부서번호, JOB 직책 , COUNT(*) 인원수, ROUND(AVG(sal),1) 평균급여
+  2  FROM EMP
+  3  GROUP BY DEPTNO, JOB
+  4  ORDER BY DEPTNO, JOB;
+
+  부서번호 직책          인원수   평균급여                                                                              
+---------- --------- ---------- ----------                                                                              
+        10 CLERK              1       1300                                                                              
+        10 MANAGER            2       2450                                                                              
+        10 PRESIDENT          1       5000                                                                              
+        20 ANALYST            2       3000                                                                              
+        20 CLERK              2        950                                                                              
+        20 MANAGER            1       2975                                                                              
+        30 CLERK              1        950                                                                              
+        30 MANAGER            1       2850                                                                              
+        30 SALESMAN           4       1400                                                                              
+
+9 개의 행이 선택되었습니다.
+
+SCOTT>SELECT DEPTNO, AVG(SAL)
+  2  FROM EMP
+  3  WHERE MAX(SAL) >=3000
+  4  GROUP BY DEPTNO;
+WHERE MAX(SAL) >=3000
+      *
+3행에 오류:
+ORA-00934: 그룹 함수는 허가되지 않습니다 
+
+
+SCOTT>SELECT DEPTNO, MAX(AVG(SAL))
+  2  FROM EMP
+  3  GROUP BY DEPTNO;
+SELECT DEPTNO, MAX(AVG(SAL))
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다 
+
+
+SCOTT>SELECT ename, deptno
+  2        FROM emp
+  3        WHERE deptno = (SELECT deptno
+  4                      FROM emp
+  5                      WHERE empno = 7369);
+
+ENAME          DEPTNO                                                                                                   
+---------- ----------                                                                                                   
+SMITH              20                                                                                                   
+JONES              20                                                                                                   
+SCOTT              20                                                                                                   
+ADAMS              20                                                                                                   
+FORD               20                                                                                                   
+
+SCOTT>SELECT ename, job
+  2        FROM emp
+  3        WHERE job = (SELECT job
+  4                      FROM emp
+  5                      WHERE deptno = 10);
+      WHERE job = (SELECT job
+                   *
+3행에 오류:
+ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다. 
+
+
+SCOTT>SELECT job
+  2  FROM emp
+  3  WHERE deptno = 10;
+
+JOB                                                                                                                     
+---------                                                                                                               
+MANAGER                                                                                                                 
+MANAGER                                                                                                                 
+PRESIDENT                                                                                                               
+CLERK                                                                                                                   
+
+SCOTT>SELECT ename, job
+  2        FROM emp
+  3        WHERE job = any (SELECT job
+  4                      FROM emp
+  5                      WHERE deptno = 10);
+
+ENAME      JOB                                                                                                          
+---------- ---------                                                                                                    
+CLARK      MANAGER                                                                                                      
+BLAKE      MANAGER                                                                                                      
+JONES      MANAGER                                                                                                      
+LEE_HK     MANAGER                                                                                                      
+KING       PRESIDENT                                                                                                    
+MILLER     CLERK                                                                                                        
+JAMES      CLERK                                                                                                        
+ADAMS      CLERK                                                                                                        
+SMITH      CLERK                                                                                                        
+
+9 개의 행이 선택되었습니다.
+
+SCOTT>SELECT ename, job
+  2        FROM emp
+  3        WHERE job in (SELECT job
+  4                      FROM emp
+  5                      WHERE deptno = 10);
+
+ENAME      JOB                                                                                                          
+---------- ---------                                                                                                    
+CLARK      MANAGER                                                                                                      
+BLAKE      MANAGER                                                                                                      
+JONES      MANAGER                                                                                                      
+LEE_HK     MANAGER                                                                                                      
+KING       PRESIDENT                                                                                                    
+MILLER     CLERK                                                                                                        
+JAMES      CLERK                                                                                                        
+ADAMS      CLERK                                                                                                        
+SMITH      CLERK                                                                                                        
+
+9 개의 행이 선택되었습니다.
+
+SCOTT>SELECT SAL
+  2  FROM EMP
+  3   WHERE JOB='SALESMAN';
+
+       SAL                                                                                                              
+----------                                                                                                              
+      1600                                                                                                              
+      1250                                                                                                              
+      1250                                                                                                              
+      1500                                                                                                              
+
+SCOTT>SELECT EMPNO, ENAME, JOB, sal
+  2  FROM EMP
+  3  WHERE SAL <any (SELECT SAL
+  4                  FROM EMP
+  5                  WHERE JOB='SALESMAN')
+  6        AND JOB <> 'SALESMAN';
+
+     EMPNO ENAME      JOB              SAL                                                                              
+---------- ---------- --------- ----------                                                                              
+      7369 SMITH      CLERK            800                                                                              
+      7900 JAMES      CLERK            950                                                                              
+      7876 ADAMS      CLERK           1100                                                                              
+      7934 MILLER     CLERK           1300                                                                              
+
+SCOTT>SELECT EMPNO, ENAME, JOB, sal
+  2  FROM EMP
+  3  WHERE SAL <all (SELECT SAL
+  4                  FROM EMP
+  5                  WHERE JOB='SALESMAN')
+  6   AND JOB <> 'SALESMAN';
+
+     EMPNO ENAME      JOB              SAL                                                                              
+---------- ---------- --------- ----------                                                                              
+      7876 ADAMS      CLERK           1100                                                                              
+      7900 JAMES      CLERK            950                                                                              
+      7369 SMITH      CLERK            800                                                                              
+
+SCOTT>SELECT empno, ename,mgr
+  2  FROM emp;
+
+     EMPNO ENAME             MGR                                                                                        
+---------- ---------- ----------                                                                                        
+      7950 LEE_HK           7839                                                                                        
+      7369 SMITH            7902                                                                                        
+      7499 ALLEN            7698                                                                                        
+      7521 WARD             7698                                                                                        
+      7566 JONES            7839                                                                                        
+      7654 MARTIN           7698                                                                                        
+      7698 BLAKE            7839                                                                                        
+      7782 CLARK            7839                                                                                        
+      7788 SCOTT            7566                                                                                        
+      7839 KING                                                                                                         
+      7844 TURNER           7698                                                                                        
+      7876 ADAMS            7788                                                                                        
+      7900 JAMES            7698                                                                                        
+      7902 FORD             7566                                                                                        
+      7934 MILLER           7782                                                                                        
+
+15 개의 행이 선택되었습니다.
+
+SCOTT>SELECT empno
+  2  FROM emp
+  3  WHERE mgr= 7369;
+
+선택된 레코드가 없습니다.
+
+SCOTT>SELECT empno
+  2  FROM emp
+  3  WHERE mgr= 7902;
+
+     EMPNO                                                                                                              
+----------                                                                                                              
+      7369                                                                                                              
+
+SCOTT>
+SCOTT>SELECT empno, enamel
+  2  FROM emp
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= empno) >0;
+SELECT empno, enamel
+              *
+1행에 오류:
+ORA-00904: "ENAMEL": 부적합한 식별자 
+
+
+SCOTT>select e.ename 이름, e.sal 급여
+  2  from emp e;
+
+이름             급여                                                                                                   
+---------- ----------                                                                                                   
+LEE_HK           2450                                                                                                   
+SMITH             800                                                                                                   
+ALLEN            1600                                                                                                   
+WARD             1250                                                                                                   
+JONES            2975                                                                                                   
+MARTIN           1250                                                                                                   
+BLAKE            2850                                                                                                   
+CLARK            2450                                                                                                   
+SCOTT            3000                                                                                                   
+KING             5000                                                                                                   
+TURNER           1500                                                                                                   
+ADAMS            1100                                                                                                   
+JAMES             950                                                                                                   
+FORD             3000                                                                                                   
+MILLER           1300                                                                                                   
+
+15 개의 행이 선택되었습니다.
+
+SCOTT>SELECT empno, ename
+  2  FROM emp e
+  3  WHERE  (SELECT count (empno)
+  4                FROM emp
+  5                WHERE mgr= e.empno) >0;
+
+     EMPNO ENAME                                                                                                        
+---------- ----------                                                                                                   
+      7566 JONES                                                                                                        
+      7698 BLAKE                                                                                                        
+      7782 CLARK                                                                                                        
+      7788 SCOTT                                                                                                        
+      7839 KING                                                                                                         
+      7902 FORD                                                                                                         
+
+6 개의 행이 선택되었습니다.
+
+SCOTT>SELECT empno, ename, sal
+  2  FROM emp e
+  3  WHERE EXISTS (SELECT empno
+  4                FROM emp
+  5                WHERE mgr= e.empno);
+
+     EMPNO ENAME             SAL                                                                                        
+---------- ---------- ----------                                                                                        
+      7566 JONES            2975                                                                                        
+      7698 BLAKE            2850                                                                                        
+      7782 CLARK            2450                                                                                        
+      7788 SCOTT            3000                                                                                        
+      7839 KING             5000                                                                                        
+      7902 FORD             3000                                                                                        
+
+6 개의 행이 선택되었습니다.
+
+SCOTT>spool off
