@@ -1,0 +1,383 @@
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4        AND
+  5        job IN ('CLERK', 'SALESMAN');
+
+ENAME          DEPTNO JOB                                                       
+---------- ---------- ---------                                                 
+SMITH              20 CLERK                                                     
+ALLEN              30 SALESMAN                                                  
+WARD               30 SALESMAN                                                  
+MARTIN             30 SALESMAN                                                  
+TURNER             30 SALESMAN                                                  
+ADAMS              20 CLERK                                                     
+JAMES              30 CLERK                                                     
+
+7 개의 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+
+ENAME          DEPTNO JOB                                                       
+---------- ---------- ---------                                                 
+SMITH              20 CLERK                                                     
+ALLEN              30 SALESMAN                                                  
+WARD               30 SALESMAN                                                  
+MARTIN             30 SALESMAN                                                  
+TURNER             30 SALESMAN                                                  
+ADAMS              20 CLERK                                                     
+
+6 개의 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE (deptno, job) = (20, 'CLERK')
+  4       OR (deptno, job) =  (30, 'SALESMAN');
+WHERE (deptno, job) = (20, 'CLERK')
+                      *
+3행에 오류:
+ORA-00920: 관계 연산자가 부적합합니다 
+
+
+SQL> grant create view to lhk7083;
+grant create view to lhk7083
+*
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> CREATE VIEW EMP_SAL_20 AS
+  2  SELECT SAL
+  3  FROM EMP
+  4  WHERE DEPTNO=20;
+CREATE VIEW EMP_SAL_20 AS
+            *
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+
+SQL> 
+SQL> SELECT *
+  2  FROM
+  3  EMP_SAL_20;
+EMP_SAL_20
+*
+3행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> 
+SQL> SELECT AVG(SAL)
+  2  FROM
+  3  EMP_SAL_20;
+EMP_SAL_20
+*
+3행에 오류:
+ORA-00942: 테이블 또는 뷰가 존재하지 않습니다 
+
+
+SQL> SELECT AVG(SAL)
+  2  FROM (SELECT SAL FROM EMP WHERE DEPTNO=20);
+
+  AVG(SAL)                                                                      
+----------                                                                      
+      2175                                                                      
+
+SQL> SELECT AVG(SAL)
+  2  FROM  EMP
+  3  WHERE DEPTNO=20;
+
+  AVG(SAL)                                                                      
+----------                                                                      
+      2175                                                                      
+
+SQL> SELECT e1.empno, e1.ename, e1. sal
+  2  FROM emp e1
+  3  WHERE EXISTS (SELECT e2.empno
+  4                FROM emp e2
+  5                WHERE e2.mgr= e1.empno);
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7566 JONES            2975                                                
+      7698 BLAKE            2850                                                
+      7782 CLARK            2450                                                
+      7788 SCOTT            3000                                                
+      7839 KING             5000                                                
+      7902 FORD             3000                                                
+
+6 개의 행이 선택되었습니다.
+
+SQL> SELECT empno, ename, sal
+  2  FROM emp e1
+  3  WHERE EXISTS (SELECT empno
+  4                FROM emp
+  5                WHERE mgr= e1.empno);
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7566 JONES            2975                                                
+      7698 BLAKE            2850                                                
+      7782 CLARK            2450                                                
+      7788 SCOTT            3000                                                
+      7839 KING             5000                                                
+      7902 FORD             3000                                                
+
+6 개의 행이 선택되었습니다.
+
+SQL> SELECT e1.empno, e1.ename, e1. sal
+  2  FROM emp e1
+  3  WHERE sal > (SELECT AVG(e2.sal)
+  4        FROM emp e2
+  5                   WHERE e2.mgr = e1.empno);
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7698 BLAKE            2850                                                
+      7782 CLARK            2450                                                
+      7788 SCOTT            3000                                                
+      7839 KING             5000                                                
+      7902 FORD             3000                                                
+
+SQL> SELECT distinct deptno FROM emp;
+
+    DEPTNO                                                                      
+----------                                                                      
+        30                                                                      
+        20                                                                      
+        10                                                                      
+
+SQL> SELECT deptno FROM dept;
+
+    DEPTNO                                                                      
+----------                                                                      
+        10                                                                      
+        20                                                                      
+        30                                                                      
+        40                                                                      
+
+SQL> 
+SQL> 
+SQL> SELECT deptno FROM emp
+  2      UNION
+  3  SELECT deptno FROM dept;
+
+    DEPTNO                                                                      
+----------                                                                      
+        10                                                                      
+        20                                                                      
+        30                                                                      
+        40                                                                      
+
+SQL> 
+SQL> SELECT deptno FROM emp
+  2      UNION ALL
+  3  SELECT deptno FROM dept;
+
+    DEPTNO                                                                      
+----------                                                                      
+        10                                                                      
+        20                                                                      
+        30                                                                      
+        30                                                                      
+        20                                                                      
+        30                                                                      
+        30                                                                      
+        10                                                                      
+        20                                                                      
+        10                                                                      
+        30                                                                      
+
+    DEPTNO                                                                      
+----------                                                                      
+        20                                                                      
+        30                                                                      
+        20                                                                      
+        10                                                                      
+        10                                                                      
+        20                                                                      
+        30                                                                      
+        40                                                                      
+
+19 개의 행이 선택되었습니다.
+
+SQL> SELECT deptno FROM emp
+  2      INTERSECT
+  3  SELECT deptno FROM dept;
+
+    DEPTNO                                                                      
+----------                                                                      
+        10                                                                      
+        20                                                                      
+        30                                                                      
+
+SQL> SELECT deptno FROM dept
+  2      MINUS
+  3  SELECT deptno FROM emp;
+
+    DEPTNO                                                                      
+----------                                                                      
+        40                                                                      
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO                                     
+---------- ---------- ---------- ----------                                     
+      7698 BLAKE            2850         30                                     
+      7788 SCOTT            3000         20                                     
+      7839 KING             5000         10                                     
+      7902 FORD             3000         20                                     
+
+SQL> update emp set deptno=10 where  empno=7902;
+
+1 행이 갱신되었습니다.
+
+SQL> SELECT empno,ename,sal,deptno
+  2  FROM emp
+  3  WHERE sal IN (SELECT  MAX(sal)
+  4                FROM emp
+  5                GROUP BY deptno);
+
+     EMPNO ENAME             SAL     DEPTNO                                     
+---------- ---------- ---------- ----------                                     
+      7698 BLAKE            2850         30                                     
+      7788 SCOTT            3000         20                                     
+      7839 KING             5000         10                                     
+      7902 FORD             3000         10                                     
+
+SQL> -------1번문제
+1.
+SQL> SELECT EMPNO, ENAME, SAL
+  2  FROM EMP E1
+  3  WHERE NOT EXISTS (
+  4  SELECT 1
+  5  FROM EMP E2
+  6  WHERE E2.SAL > E1.SAL
+  7  );
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7839 KING             5000                                                
+
+SQL> SELECT EMPNO, ENAME, SAL
+  2  FROM EMP E1
+  3  WHERE NOT EXISTS (
+  4  SELECT 1
+  5  FROM EMP E2
+  6  WHERE E2.SAL < E1.SAL
+  7  );
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7369 SMITH             800                                                
+
+SQL> -------2번문제
+SQL> SELECT empno, ename, sal, deptno
+  2  FROM (
+  3  SELECT empno, ename, sal, deptno,
+  4  ROW_NUMBER() OVER (PARTITION BY deptno ORDER BY sal) AS min_rank,
+  5  ROW_NUMBER() OVER (PARTITION BY deptno ORDER BY sal DESC) AS max_rank
+  6  FROM emp
+  7  )
+  8  WHERE min_rank = 1 OR max_rank = 1;
+
+     EMPNO ENAME             SAL     DEPTNO                                     
+---------- ---------- ---------- ----------                                     
+      7934 MILLER           1300         10                                     
+      7839 KING             5000         10                                     
+      7369 SMITH             800         20                                     
+      7788 SCOTT            3000         20                                     
+      7900 JAMES             950         30                                     
+      7698 BLAKE            2850         30                                     
+
+6 개의 행이 선택되었습니다.
+
+SQL> SELECT e1.empno, e1.ename, e1.sal, e1.deptno
+  2  FROM emp e1
+  3  WHERE (
+  4  SELECT COUNT(DISTINCT e2.sal)
+  5  FROM emp e2
+  6  WHERE e2.deptno = e1.deptno
+  7  AND e2.sal >= e1.sal
+  8  ) <= 2;
+
+     EMPNO ENAME             SAL     DEPTNO                                     
+---------- ---------- ---------- ----------                                     
+      7499 ALLEN            1600         30                                     
+      7566 JONES            2975         20                                     
+      7698 BLAKE            2850         30                                     
+      7788 SCOTT            3000         20                                     
+      7839 KING             5000         10                                     
+      7902 FORD             3000         10                                     
+
+6 개의 행이 선택되었습니다.
+
+SQL> ----------3번문제
+SQL> SELECT e1.ename, e2.deptno
+  2  FROM emp e1
+  3  JOIN emp e2 ON e1.mgr = e2.empno
+  4  ORDER BY e1.ename;
+
+ENAME          DEPTNO                                                           
+---------- ----------                                                           
+ADAMS              20                                                           
+ALLEN              30                                                           
+BLAKE              10                                                           
+CLARK              10                                                           
+FORD               20                                                           
+JAMES              30                                                           
+JONES              10                                                           
+LEE_HK             10                                                           
+MARTIN             30                                                           
+MILLER             10                                                           
+SCOTT              20                                                           
+
+ENAME          DEPTNO                                                           
+---------- ----------                                                           
+SMITH              10                                                           
+TURNER             30                                                           
+WARD               30                                                           
+
+14 개의 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE deptno IN (20,30)
+  4  AND
+  5  job IN ('CLERK', 'SALESMAN');
+
+ENAME          DEPTNO JOB                                                       
+---------- ---------- ---------                                                 
+SMITH              20 CLERK                                                     
+ALLEN              30 SALESMAN                                                  
+WARD               30 SALESMAN                                                  
+MARTIN             30 SALESMAN                                                  
+TURNER             30 SALESMAN                                                  
+ADAMS              20 CLERK                                                     
+JAMES              30 CLERK                                                     
+
+7 개의 행이 선택되었습니다.
+
+SQL> SELECT ename, deptno, job
+  2  FROM EMP
+  3  WHERE (deptno, job) IN ((20, 'CLERK'), (30, 'SALESMAN'));
+
+ENAME          DEPTNO JOB                                                       
+---------- ---------- ---------                                                 
+SMITH              20 CLERK                                                     
+ALLEN              30 SALESMAN                                                  
+WARD               30 SALESMAN                                                  
+MARTIN             30 SALESMAN                                                  
+TURNER             30 SALESMAN                                                  
+ADAMS              20 CLERK                                                     
+
+6 개의 행이 선택되었습니다.
+
+SQL> spool off
+
