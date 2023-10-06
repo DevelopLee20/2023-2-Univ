@@ -1,0 +1,313 @@
+-------------------------------
+--[Join]연산 예제 교재 43쪽
+-------------------------------
+--조인(Join) 이란
+ -- 두개 이상의 테이블을 연결하여 데이터를 검색하는 방법 
+ -- 보통 둘 이상의 행들의 공통된 값 을 사용하여  조인
+ -- 공통된 속성을 조인 속성이라고 함
+ -- 대개 조인 속성은 두 테이블의 Primary Key 혹은  Foreign Key 가 사용됨
+ -- 조인은 두 테이블의 카티션프러덕트(곱집합)으로 시작됨
+
+
+ SELECT * FROM emp;
+ SELECT * FROM dept;
+
+----------Equi Join(동일조인)-----------
+--두 테이블의 조인속성 값이 같은 것끼리 연결함
+
+--EMP와 DEPT를 연결하여 부서번호가 같은 것만 선택한다면?
+
+
+---> 필요한 속성만 열거해 보자(사원번호, 이름, 부서번호, 부서이름, 부서위치)
+
+SELECT emp.empno, emp.ename, emp.deptno, dept.deptno, dept.dname, dept.loc
+FROM emp, dept
+WHERE emp.deptno = dept.deptno;
+
+--주의 !!! 다음처럼 모호한 표현은 오류가 발생함
+
+SELECT empno, ename, deptno, deptno, dname, loc
+FROM emp, dept
+WHERE emp.deptno = dept.deptno;
+---->deptno는 어느테이블에 있는 값인지 명시해야함(emp? or dept?)
+
+-- 다음처럼 alias를 사용하면 편리함 --
+
+SELECT e.empno, e.ename, e.deptno, d.deptno, d.dname, d.loc
+FROM emp e, dept d
+WHERE e.deptno = d.deptno;
+
+/*
+--------------------------------
+JOIN 연산자 사용
+--------------------------------
+
+SELECT 조회할 컬럼
+FROM  테이블1   [INNER] JOIN  테이블2
+USING 조인속성
+[WHERE 검색 조건]
+
+*/
+
+SELECT * 
+FROM emp, dept
+WHERE emp.deptno = dept.deptno;
+
+---> 다음처럼 변환 가능함
+SELECT * 
+FROM emp JOIN dept
+USING (deptno);
+
+---> INNER JOIN은 디폴트
+SELECT * 
+FROM emp INNER JOIN dept 
+USING (deptno);
+
+---> 원하는 항목만 출력해보자
+SELECT emp.ename, dept.dname, emp.sal 
+FROM emp JOIN dept 
+USING (deptno);
+
+---> Alias 사용
+SELECT e.ename, d.dname, e.sal 
+FROM emp e JOIN dept d
+USING (deptno);
+
+/* 조건식의 사용
+SELECT <열 목록>
+FROM  테이블1   [INNER] JOIN 테이블2
+ON <조인 조건>
+[WHERE 검색 조건] */
+
+SELECT * 
+FROM emp  JOIN dept 
+ON (emp.deptno=dept.deptno);
+
+---> Alias 사용
+SELECT e.ename, d.dname, e.sal 
+FROM emp e  JOIN dept d 
+ON (e.deptno=d.deptno);
+
+---> WHERE절을 추가해보자
+
+SELECT e.ename, d.dname, e.sal 
+FROM emp e JOIN dept d
+ON e.deptno=d.deptno
+WHERE sal >1500;
+
+
+
+/*
+-------------Non-Equi Join(비동일조인)---------
+조인속성값이 일치하지 않는 조인
+ON절에서 적절한 조건식을 사용하여 해결함
+급여(sal)와 급여가 속한 호봉등급 간의 관계를 알아보자
+*/
+
+SELECT e.ename, e.sal, s.grade
+FROM emp e, salgrade s
+WHERE e.sal between s.losal and s.hisal;
+
+SELECT e.ename, e.sal, s.grade
+FROM emp e JOIN salgrade s
+ON e.sal between s.losal and s.hisal;
+
+/*
+Outer Join(외부조인)
+--상대 테이블과 연결이 없는 튜플까지 포함
+문법
+SELECT <열 목록>
+FROM <첫 번째 테이블(LEFT 테이블)>
+    <LEFT | RIGHT | FULL> OUTER JOIN <두 번째 테이블(RIGHT 테이블)>
+     ON <조인 조건>
+[WHERE 검색 조건]
+*/
+
+
+SELECT e.ename, d.deptno, d.dname 
+FROM emp e  JOIN dept d
+ON (e.deptno=d.deptno);
+----> 사원이 없는 부서가 빠짐
+
+SELECT  e.ename, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno(+) = d.deptno;
+----> (+)의 의미는 해당필드에 대응 값이 없으면 NULL을 추가하여 연결하라는 의미
+
+----> 오른쪽 테이블의 모든 값을 출력 시키자
+SELECT e.ename, d.deptno, d.dname 
+FROM emp e  RIGHT OUTER JOIN dept d
+ON (e.deptno=d.deptno);
+
+/*
+----Self Join---
+- 자신의 테이블에 있는 다른 튜플과 연결함
+- 자기 자신과 조인하므로 1개의 테이블을 사용
+- 별도의 문법이 있는 것은 아니고 1개로 조인
+*/
+--매니저 찾기
+--자신의 매니저번호와 일치하는 사원을 찾으면 된다
+
+SELECT worker.ename 사원이름,   manager.ename 매니저이름
+FROM emp worker, emp manager
+WHERE worker.mgr = manager.empno;
+
+SELECT worker.ename 사원이름,   manager.ename 매니저이름 
+FROM emp worker JOIN emp manager
+ON (worker.mgr = manager.empno);
+
+/*-------------------------
+  순위(Rank) 알아내기
+-------------------------*/
+SELECT sal FROM emp ORDER BY sal DESC;
+
+SELECT RANK(1300) WITHIN GROUP(ORDER BY SAL DESC) 
+FROM emp;
+----> 1300은 급여 중 상위 몇위에 해당될까?
+
+SELECT sal FROM emp ORDER BY sal ASC;
+SELECT RANK(1300) WITHIN GROUP(ORDER BY SAL ASC) 
+FROM emp;
+----> 1300은 급여 중 하위 몇위에 해당될까?
+
+SELECT RANK(10000) WITHIN GROUP(ORDER BY SAL DESC) 
+FROM emp;
+----> 10000은 존재하지 않지만 있다면 상위 몇위에 해당될까?
+
+
+/*--------------------------------------------------------
+  순위(Rank) 매기기
+RANK(), DENSE_RANK(), ROW_NUMBER()
+----------------------------------------------------------*/
+
+SELECT ename 이름, sal 급여, RANK() OVER(ORDER BY SAL DESC) 순위
+FROM emp;
+----> 각 사원 급여의 순위 (급여가 큰 사원부터)
+
+SELECT ename 이름, sal 급여, DENSE_RANK() OVER(ORDER BY SAL DESC) 순위
+FROM emp;
+----> DENSE_RANK()는 각 사원 급여의 순위 중 중복값이 나오면 그다음 순위를 +1만 계산 
+
+SELECT ename 이름, sal 급여, ROW_NUMBER() OVER(ORDER BY SAL DESC) 순위
+FROM emp;
+----> 동률일 경우 각각 차등을 둠
+
+-----> 이 세가지를 한꺼번에 해보자 
+SELECT ename 이름, sal 급여, 
+          RANK() OVER(ORDER BY SAL DESC) RANK_순위,
+          DENSE_RANK() OVER(ORDER BY SAL DESC) DENSE_RANK_순위,
+          ROW_NUMBER() OVER(ORDER BY SAL DESC)  ROW_NUMBER_순위
+FROM emp;
+
+-----> job별로 따로 등수를 낼 수는 없을까??
+-----> PARTITION BY 를 사용하여 해결
+SELECT ename 이름, sal 급여, job 직급, RANK() OVER(PARTITION BY job ORDER BY SAL DESC) 순위
+FROM emp;
+----> 각 사원 직급별 급여의 순위 (급여가 큰 사원부터)
+
+
+/*--------------------------------------------------------
+  등분하기 ; 일정한 개수로 등분하여 출력함
+NTILE()
+----------------------------------------------------------*/
+
+
+SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+FROM emp order by empno;
+
+---> 다음과 같이 정렬하면 더욱 좋다
+
+SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+FROM emp order by NTILE등분;
+
+----> 각 사원 급여를 4등분한다
+
+---> 다음 질의식이 가능할까?
+SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+FROM emp order by NTILE(4);
+
+----> ALIAS가 필요하다!!!!
+
+
+/*----------
+실습 과제 
+-------------
+1. 본인의 상사(mgr)과 같은 부서에 근무하는 사원의 이름, 부서번호
+   상사이름, 상사의 부서번호를 구하여 사원의 이름 순서로 출력하시오
+   JOIN 연산자 사용할 것!
+
+이름           부서번호 상사이름     상사부서
+----------   ----------  ----------      ----------
+ADAMS              20 SCOTT             20
+CLARK               10 KING               10
+FORD                20 JONES              20
+JAMES               30 BLAKE              30
+MARTIN             30 BLAKE              30
+MILLER              10 CLARK              10
+SCOTT               20 JONES              20
+SMITH               20 FORD               20
+TURNER             30 BLAKE              30
+WARD               30 BLAKE              30
+
+2. 6호봉을 다음과 신설해보자
+INSERT INTO salgrade values(6, 10000,20000);
+SELECT * FROM salgrade;
+COMMIT;
+이 때, 사원의 급여와 호봉을 조인해서 다음과 같이 출력해보자
+단, 6호봉에 해당하는 사원은 없다는 결과까지 추가되어야 함
+다음의 출력 결과 참고
+
+ENAME             SAL      GRADE
+---------- ---------- ----------
+SMITH             800          1
+JAMES             950          1
+ADAMS          1100          1
+WARD            1250          2
+MARTIN          1250          2
+MILLER           1300          2
+TURNER          1500         3
+ALLEN            1600          3
+CLARK            2450          4
+BLAKE            2850          4
+JONES            2975          4
+SCOTT            3000          4
+FORD             3000          4
+KING             5000          5
+                                   6
+15 개의 행이 선택되었습니다.
+
+
+3. 각 부서별 최대급여자의 이름, 부서번호, 급여를 구하시오. 
+   (단, RANK를 사용하고 부서번호 순서로 출력할 것)
+
+ENAME       DEPTNO    SAL
+----------      ----------  ----------
+KING            10         5000
+SCOTT           20        3000
+FORD            20        3000
+BLAKE           30        2850
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

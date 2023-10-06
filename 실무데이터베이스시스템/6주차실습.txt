@@ -1,0 +1,1176 @@
+SQL>  SELECT * FROM emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7950 LEE_HK     MANAGER         7839 85/10/09       2450       2000       
+        10                                                                      
+                                                                                
+      7369 SMITH      CLERK           7902 80/12/17        800                  
+        20                                                                      
+                                                                                
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30                                                                      
+                                                                                
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20                                                                      
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30                                                                      
+                                                                                
+      7782 CLARK      MANAGER         7839 81/06/09       2450                  
+        10                                                                      
+                                                                                
+      7788 SCOTT      ANALYST         7566 87/04/19       3000                  
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7839 KING       PRESIDENT            81/11/17       5000                  
+        10                                                                      
+                                                                                
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30                                                                      
+                                                                                
+      7876 ADAMS      CLERK           7788 87/05/23       1100                  
+        20                                                                      
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO                                                                      
+----------                                                                      
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30                                                                      
+                                                                                
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20                                                                      
+                                                                                
+      7934 MILLER     CLERK           7782 82/01/23       1300                  
+        10                                                                      
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL>  SELECT * FROM dept;
+
+    DEPTNO DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10 ACCOUNTING     NEW YORK                                              
+        20 RESEARCH       DALLAS                                                
+        30 SALES          CHICAGO                                               
+        40 OPERATIONS     BOSTON                                                
+
+SQL> SELECT emp.empno, emp.ename, emp.deptno, dept.deptno, dept.dname, dept.loc
+  2  FROM emp, dept
+  3  WHERE emp.deptno = dept.deptno;
+
+     EMPNO ENAME          DEPTNO     DEPTNO DNAME          LOC                  
+---------- ---------- ---------- ---------- -------------- -------------        
+      7950 LEE_HK             10         10 ACCOUNTING     NEW YORK             
+      7934 MILLER             10         10 ACCOUNTING     NEW YORK             
+      7839 KING               10         10 ACCOUNTING     NEW YORK             
+      7782 CLARK              10         10 ACCOUNTING     NEW YORK             
+      7566 JONES              20         20 RESEARCH       DALLAS               
+      7369 SMITH              20         20 RESEARCH       DALLAS               
+      7902 FORD               20         20 RESEARCH       DALLAS               
+      7876 ADAMS              20         20 RESEARCH       DALLAS               
+      7788 SCOTT              20         20 RESEARCH       DALLAS               
+      7499 ALLEN              30         30 SALES          CHICAGO              
+      7844 TURNER             30         30 SALES          CHICAGO              
+
+     EMPNO ENAME          DEPTNO     DEPTNO DNAME          LOC                  
+---------- ---------- ---------- ---------- -------------- -------------        
+      7900 JAMES              30         30 SALES          CHICAGO              
+      7521 WARD               30         30 SALES          CHICAGO              
+      7698 BLAKE              30         30 SALES          CHICAGO              
+      7654 MARTIN             30         30 SALES          CHICAGO              
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT empno, ename, deptno, deptno, dname, loc
+  2  FROM emp, dept
+  3  WHERE emp.deptno = dept.deptno;
+SELECT empno, ename, deptno, deptno, dname, loc
+                             *
+1행에 오류:
+ORA-00918: 열의 정의가 애매합니다 
+
+
+SQL> SELECT e.empno, e.ename, e.deptno, d.deptno, d.dname, d.loc
+  2  FROM emp e, dept d
+  3  WHERE e.deptno = d.deptno;
+
+     EMPNO ENAME          DEPTNO     DEPTNO DNAME          LOC                  
+---------- ---------- ---------- ---------- -------------- -------------        
+      7950 LEE_HK             10         10 ACCOUNTING     NEW YORK             
+      7934 MILLER             10         10 ACCOUNTING     NEW YORK             
+      7839 KING               10         10 ACCOUNTING     NEW YORK             
+      7782 CLARK              10         10 ACCOUNTING     NEW YORK             
+      7566 JONES              20         20 RESEARCH       DALLAS               
+      7369 SMITH              20         20 RESEARCH       DALLAS               
+      7902 FORD               20         20 RESEARCH       DALLAS               
+      7876 ADAMS              20         20 RESEARCH       DALLAS               
+      7788 SCOTT              20         20 RESEARCH       DALLAS               
+      7499 ALLEN              30         30 SALES          CHICAGO              
+      7844 TURNER             30         30 SALES          CHICAGO              
+
+     EMPNO ENAME          DEPTNO     DEPTNO DNAME          LOC                  
+---------- ---------- ---------- ---------- -------------- -------------        
+      7900 JAMES              30         30 SALES          CHICAGO              
+      7521 WARD               30         30 SALES          CHICAGO              
+      7698 BLAKE              30         30 SALES          CHICAGO              
+      7654 MARTIN             30         30 SALES          CHICAGO              
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT *
+  2  FROM emp, dept
+  3  WHERE emp.deptno = dept.deptno;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7950 LEE_HK     MANAGER         7839 85/10/09       2450       2000       
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7934 MILLER     CLERK           7782 82/01/23       1300                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7839 KING       PRESIDENT            81/11/17       5000                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7782 CLARK      MANAGER         7839 81/06/09       2450                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7369 SMITH      CLERK           7902 80/12/17        800                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7876 ADAMS      CLERK           7788 87/05/23       1100                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7788 SCOTT      ANALYST         7566 87/04/19       3000                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30         30 SALES          CHICAGO                                    
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT *
+  2  FROM emp JOIN dept
+  3  USING (deptno);
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10       7950 LEE_HK     MANAGER         7839 85/10/09       2450       
+      2000 ACCOUNTING     NEW YORK                                              
+                                                                                
+        10       7934 MILLER     CLERK           7782 82/01/23       1300       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+        10       7839 KING       PRESIDENT            81/11/17       5000       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10       7782 CLARK      MANAGER         7839 81/06/09       2450       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+        20       7566 JONES      MANAGER         7839 81/04/02       2975       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7369 SMITH      CLERK           7902 80/12/17        800       
+           RESEARCH       DALLAS                                                
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        20       7902 FORD       ANALYST         7566 81/12/03       3000       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7876 ADAMS      CLERK           7788 87/05/23       1100       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7788 SCOTT      ANALYST         7566 87/04/19       3000       
+           RESEARCH       DALLAS                                                
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        30       7499 ALLEN      SALESMAN        7698 81/02/20       1600       
+       300 SALES          CHICAGO                                               
+                                                                                
+        30       7844 TURNER     SALESMAN        7698 81/09/08       1500       
+         0 SALES          CHICAGO                                               
+                                                                                
+        30       7900 JAMES      CLERK           7698 81/12/03        950       
+           SALES          CHICAGO                                               
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        30       7521 WARD       SALESMAN        7698 81/02/22       1250       
+       500 SALES          CHICAGO                                               
+                                                                                
+        30       7698 BLAKE      MANAGER         7839 81/05/01       2850       
+           SALES          CHICAGO                                               
+                                                                                
+        30       7654 MARTIN     SALESMAN        7698 81/09/28       1250       
+      1400 SALES          CHICAGO                                               
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT *
+  2  FROM emp INNER JOIN dept
+  3  USING (deptno);
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10       7950 LEE_HK     MANAGER         7839 85/10/09       2450       
+      2000 ACCOUNTING     NEW YORK                                              
+                                                                                
+        10       7934 MILLER     CLERK           7782 82/01/23       1300       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+        10       7839 KING       PRESIDENT            81/11/17       5000       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        10       7782 CLARK      MANAGER         7839 81/06/09       2450       
+           ACCOUNTING     NEW YORK                                              
+                                                                                
+        20       7566 JONES      MANAGER         7839 81/04/02       2975       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7369 SMITH      CLERK           7902 80/12/17        800       
+           RESEARCH       DALLAS                                                
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        20       7902 FORD       ANALYST         7566 81/12/03       3000       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7876 ADAMS      CLERK           7788 87/05/23       1100       
+           RESEARCH       DALLAS                                                
+                                                                                
+        20       7788 SCOTT      ANALYST         7566 87/04/19       3000       
+           RESEARCH       DALLAS                                                
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        30       7499 ALLEN      SALESMAN        7698 81/02/20       1600       
+       300 SALES          CHICAGO                                               
+                                                                                
+        30       7844 TURNER     SALESMAN        7698 81/09/08       1500       
+         0 SALES          CHICAGO                                               
+                                                                                
+        30       7900 JAMES      CLERK           7698 81/12/03        950       
+           SALES          CHICAGO                                               
+                                                                                
+
+    DEPTNO      EMPNO ENAME      JOB              MGR HIREDATE        SAL       
+---------- ---------- ---------- --------- ---------- -------- ----------       
+      COMM DNAME          LOC                                                   
+---------- -------------- -------------                                         
+        30       7521 WARD       SALESMAN        7698 81/02/22       1250       
+       500 SALES          CHICAGO                                               
+                                                                                
+        30       7698 BLAKE      MANAGER         7839 81/05/01       2850       
+           SALES          CHICAGO                                               
+                                                                                
+        30       7654 MARTIN     SALESMAN        7698 81/09/28       1250       
+      1400 SALES          CHICAGO                                               
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT emp.ename, dept.dname, emp.sal
+  2  FROM emp JOIN dept
+  3  USING (deptno);
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+LEE_HK     ACCOUNTING           2450                                            
+MILLER     ACCOUNTING           1300                                            
+KING       ACCOUNTING           5000                                            
+CLARK      ACCOUNTING           2450                                            
+JONES      RESEARCH             2975                                            
+SMITH      RESEARCH              800                                            
+FORD       RESEARCH             3000                                            
+ADAMS      RESEARCH             1100                                            
+SCOTT      RESEARCH             3000                                            
+ALLEN      SALES                1600                                            
+TURNER     SALES                1500                                            
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+JAMES      SALES                 950                                            
+WARD       SALES                1250                                            
+BLAKE      SALES                2850                                            
+MARTIN     SALES                1250                                            
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, d.dname, e.sal
+  2  FROM emp e JOIN dept d
+  3  USING (deptno);
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+LEE_HK     ACCOUNTING           2450                                            
+MILLER     ACCOUNTING           1300                                            
+KING       ACCOUNTING           5000                                            
+CLARK      ACCOUNTING           2450                                            
+JONES      RESEARCH             2975                                            
+SMITH      RESEARCH              800                                            
+FORD       RESEARCH             3000                                            
+ADAMS      RESEARCH             1100                                            
+SCOTT      RESEARCH             3000                                            
+ALLEN      SALES                1600                                            
+TURNER     SALES                1500                                            
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+JAMES      SALES                 950                                            
+WARD       SALES                1250                                            
+BLAKE      SALES                2850                                            
+MARTIN     SALES                1250                                            
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT *
+  2  FROM emp  JOIN dept
+  3  ON (emp.deptno=dept.deptno);
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7950 LEE_HK     MANAGER         7839 85/10/09       2450       2000       
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7934 MILLER     CLERK           7782 82/01/23       1300                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7839 KING       PRESIDENT            81/11/17       5000                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7782 CLARK      MANAGER         7839 81/06/09       2450                  
+        10         10 ACCOUNTING     NEW YORK                                   
+                                                                                
+      7566 JONES      MANAGER         7839 81/04/02       2975                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7369 SMITH      CLERK           7902 80/12/17        800                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7902 FORD       ANALYST         7566 81/12/03       3000                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7876 ADAMS      CLERK           7788 87/05/23       1100                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+      7788 SCOTT      ANALYST         7566 87/04/19       3000                  
+        20         20 RESEARCH       DALLAS                                     
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7499 ALLEN      SALESMAN        7698 81/02/20       1600        300       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7844 TURNER     SALESMAN        7698 81/09/08       1500          0       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7900 JAMES      CLERK           7698 81/12/03        950                  
+        30         30 SALES          CHICAGO                                    
+                                                                                
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM       
+---------- ---------- --------- ---------- -------- ---------- ----------       
+    DEPTNO     DEPTNO DNAME          LOC                                        
+---------- ---------- -------------- -------------                              
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7698 BLAKE      MANAGER         7839 81/05/01       2850                  
+        30         30 SALES          CHICAGO                                    
+                                                                                
+      7654 MARTIN     SALESMAN        7698 81/09/28       1250       1400       
+        30         30 SALES          CHICAGO                                    
+                                                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, d.dname, e.sal
+  2  FROM emp e  JOIN dept d
+  3  ON (e.deptno=d.deptno);
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+LEE_HK     ACCOUNTING           2450                                            
+MILLER     ACCOUNTING           1300                                            
+KING       ACCOUNTING           5000                                            
+CLARK      ACCOUNTING           2450                                            
+JONES      RESEARCH             2975                                            
+SMITH      RESEARCH              800                                            
+FORD       RESEARCH             3000                                            
+ADAMS      RESEARCH             1100                                            
+SCOTT      RESEARCH             3000                                            
+ALLEN      SALES                1600                                            
+TURNER     SALES                1500                                            
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+JAMES      SALES                 950                                            
+WARD       SALES                1250                                            
+BLAKE      SALES                2850                                            
+MARTIN     SALES                1250                                            
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, d.dname, e.sal
+  2  FROM emp e JOIN dept d
+  3  ON e.deptno=d.deptno
+  4  WHERE sal >1500;
+
+ENAME      DNAME                 SAL                                            
+---------- -------------- ----------                                            
+KING       ACCOUNTING           5000                                            
+LEE_HK     ACCOUNTING           2450                                            
+CLARK      ACCOUNTING           2450                                            
+JONES      RESEARCH             2975                                            
+FORD       RESEARCH             3000                                            
+SCOTT      RESEARCH             3000                                            
+ALLEN      SALES                1600                                            
+BLAKE      SALES                2850                                            
+
+8 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, e.sal, s.grade
+  2  FROM emp e, salgrade s
+  3  WHERE e.sal between s.losal and s.hisal;
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+SMITH             800          1                                                
+JAMES             950          1                                                
+ADAMS            1100          1                                                
+WARD             1250          2                                                
+MARTIN           1250          2                                                
+MILLER           1300          2                                                
+TURNER           1500          3                                                
+ALLEN            1600          3                                                
+LEE_HK           2450          4                                                
+CLARK            2450          4                                                
+BLAKE            2850          4                                                
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+JONES            2975          4                                                
+SCOTT            3000          4                                                
+FORD             3000          4                                                
+KING             5000          5                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, e.sal, s.grade
+  2  FROM emp e JOIN salgrade s
+  3  ON e.sal between s.losal and s.hisal;
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+SMITH             800          1                                                
+JAMES             950          1                                                
+ADAMS            1100          1                                                
+WARD             1250          2                                                
+MARTIN           1250          2                                                
+MILLER           1300          2                                                
+TURNER           1500          3                                                
+ALLEN            1600          3                                                
+LEE_HK           2450          4                                                
+CLARK            2450          4                                                
+BLAKE            2850          4                                                
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+JONES            2975          4                                                
+SCOTT            3000          4                                                
+FORD             3000          4                                                
+KING             5000          5                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, d.deptno, d.dname
+  2  FROM emp e  JOIN dept d
+  3  ON (e.deptno=d.deptno);
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+LEE_HK             10 ACCOUNTING                                                
+MILLER             10 ACCOUNTING                                                
+KING               10 ACCOUNTING                                                
+CLARK              10 ACCOUNTING                                                
+JONES              20 RESEARCH                                                  
+SMITH              20 RESEARCH                                                  
+FORD               20 RESEARCH                                                  
+ADAMS              20 RESEARCH                                                  
+SCOTT              20 RESEARCH                                                  
+ALLEN              30 SALES                                                     
+TURNER             30 SALES                                                     
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+JAMES              30 SALES                                                     
+WARD               30 SALES                                                     
+BLAKE              30 SALES                                                     
+MARTIN             30 SALES                                                     
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT  e.ename, d.deptno, d.dname
+  2  FROM emp e, dept d
+  3  WHERE e.deptno(+) = d.deptno;
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+LEE_HK             10 ACCOUNTING                                                
+MILLER             10 ACCOUNTING                                                
+KING               10 ACCOUNTING                                                
+CLARK              10 ACCOUNTING                                                
+JONES              20 RESEARCH                                                  
+SMITH              20 RESEARCH                                                  
+FORD               20 RESEARCH                                                  
+ADAMS              20 RESEARCH                                                  
+SCOTT              20 RESEARCH                                                  
+ALLEN              30 SALES                                                     
+TURNER             30 SALES                                                     
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+JAMES              30 SALES                                                     
+WARD               30 SALES                                                     
+BLAKE              30 SALES                                                     
+MARTIN             30 SALES                                                     
+                   40 OPERATIONS                                                
+
+16 개의 행이 선택되었습니다.
+
+SQL> SELECT e.ename, d.deptno, d.dname
+  2  FROM emp e  RIGHT OUTER JOIN dept d
+  3  ON (e.deptno=d.deptno);
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+LEE_HK             10 ACCOUNTING                                                
+MILLER             10 ACCOUNTING                                                
+KING               10 ACCOUNTING                                                
+CLARK              10 ACCOUNTING                                                
+JONES              20 RESEARCH                                                  
+SMITH              20 RESEARCH                                                  
+FORD               20 RESEARCH                                                  
+ADAMS              20 RESEARCH                                                  
+SCOTT              20 RESEARCH                                                  
+ALLEN              30 SALES                                                     
+TURNER             30 SALES                                                     
+
+ENAME          DEPTNO DNAME                                                     
+---------- ---------- --------------                                            
+JAMES              30 SALES                                                     
+WARD               30 SALES                                                     
+BLAKE              30 SALES                                                     
+MARTIN             30 SALES                                                     
+                   40 OPERATIONS                                                
+
+16 개의 행이 선택되었습니다.
+
+SQL> SELECT worker.ename 사원이름,   manager.ename 매니저이름
+  2  FROM emp worker, emp manager
+  3  WHERE worker.mgr = manager.empno;
+
+사원이름   매니저이름                                                           
+---------- ----------                                                           
+FORD       JONES                                                                
+SCOTT      JONES                                                                
+JAMES      BLAKE                                                                
+TURNER     BLAKE                                                                
+MARTIN     BLAKE                                                                
+WARD       BLAKE                                                                
+ALLEN      BLAKE                                                                
+MILLER     CLARK                                                                
+ADAMS      SCOTT                                                                
+CLARK      KING                                                                 
+BLAKE      KING                                                                 
+
+사원이름   매니저이름                                                           
+---------- ----------                                                           
+JONES      KING                                                                 
+LEE_HK     KING                                                                 
+SMITH      FORD                                                                 
+
+14 개의 행이 선택되었습니다.
+
+SQL> SELECT worker.ename 사원이름,   manager.ename 매니저이름
+  2  FROM emp worker JOIN emp manager
+  3  ON (worker.mgr = manager.empno);
+
+사원이름   매니저이름                                                           
+---------- ----------                                                           
+FORD       JONES                                                                
+SCOTT      JONES                                                                
+JAMES      BLAKE                                                                
+TURNER     BLAKE                                                                
+MARTIN     BLAKE                                                                
+WARD       BLAKE                                                                
+ALLEN      BLAKE                                                                
+MILLER     CLARK                                                                
+ADAMS      SCOTT                                                                
+CLARK      KING                                                                 
+BLAKE      KING                                                                 
+
+사원이름   매니저이름                                                           
+---------- ----------                                                           
+JONES      KING                                                                 
+LEE_HK     KING                                                                 
+SMITH      FORD                                                                 
+
+14 개의 행이 선택되었습니다.
+
+SQL> SELECT sal FROM emp ORDER BY sal DESC;
+
+       SAL                                                                      
+----------                                                                      
+      5000                                                                      
+      3000                                                                      
+      3000                                                                      
+      2975                                                                      
+      2850                                                                      
+      2450                                                                      
+      2450                                                                      
+      1600                                                                      
+      1500                                                                      
+      1300                                                                      
+      1250                                                                      
+
+       SAL                                                                      
+----------                                                                      
+      1250                                                                      
+      1100                                                                      
+       950                                                                      
+       800                                                                      
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT RANK(1300) WITHIN GROUP(ORDER BY SAL DESC)
+  2  FROM emp;
+
+RANK(1300)WITHINGROUP(ORDERBYSALDESC)                                           
+-------------------------------------                                           
+                                   10                                           
+
+SQL> SELECT sal FROM emp ORDER BY sal ASC;
+
+       SAL                                                                      
+----------                                                                      
+       800                                                                      
+       950                                                                      
+      1100                                                                      
+      1250                                                                      
+      1250                                                                      
+      1300                                                                      
+      1500                                                                      
+      1600                                                                      
+      2450                                                                      
+      2450                                                                      
+      2850                                                                      
+
+       SAL                                                                      
+----------                                                                      
+      2975                                                                      
+      3000                                                                      
+      3000                                                                      
+      5000                                                                      
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT RANK(1300) WITHIN GROUP(ORDER BY SAL ASC)
+  2  FROM emp;
+
+RANK(1300)WITHINGROUP(ORDERBYSALASC)                                            
+------------------------------------                                            
+                                   6                                            
+
+SQL> SELECT RANK(10000) WITHIN GROUP(ORDER BY SAL DESC)
+  2  FROM emp;
+
+RANK(10000)WITHINGROUP(ORDERBYSALDESC)                                          
+--------------------------------------                                          
+                                     1                                          
+
+SQL> SELECT ename 이름, sal 급여, RANK() OVER(ORDER BY SAL DESC) 순위
+  2  FROM emp;
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+KING             5000          1                                                
+FORD             3000          2                                                
+SCOTT            3000          2                                                
+JONES            2975          4                                                
+BLAKE            2850          5                                                
+LEE_HK           2450          6                                                
+CLARK            2450          6                                                
+ALLEN            1600          8                                                
+TURNER           1500          9                                                
+MILLER           1300         10                                                
+WARD             1250         11                                                
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+MARTIN           1250         11                                                
+ADAMS            1100         13                                                
+JAMES             950         14                                                
+SMITH             800         15                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, DENSE_RANK() OVER(ORDER BY SAL DESC) 순위
+  2  FROM emp;
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+KING             5000          1                                                
+FORD             3000          2                                                
+SCOTT            3000          2                                                
+JONES            2975          3                                                
+BLAKE            2850          4                                                
+LEE_HK           2450          5                                                
+CLARK            2450          5                                                
+ALLEN            1600          6                                                
+TURNER           1500          7                                                
+MILLER           1300          8                                                
+WARD             1250          9                                                
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+MARTIN           1250          9                                                
+ADAMS            1100         10                                                
+JAMES             950         11                                                
+SMITH             800         12                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, ROW_NUMBER() OVER(ORDER BY SAL DESC) 순위
+  2  FROM emp;
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+KING             5000          1                                                
+FORD             3000          2                                                
+SCOTT            3000          3                                                
+JONES            2975          4                                                
+BLAKE            2850          5                                                
+LEE_HK           2450          6                                                
+CLARK            2450          7                                                
+ALLEN            1600          8                                                
+TURNER           1500          9                                                
+MILLER           1300         10                                                
+WARD             1250         11                                                
+
+이름             급여       순위                                                
+---------- ---------- ----------                                                
+MARTIN           1250         12                                                
+ADAMS            1100         13                                                
+JAMES             950         14                                                
+SMITH             800         15                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여,
+  2            RANK() OVER(ORDER BY SAL DESC) RANK_순위,
+  3            DENSE_RANK() OVER(ORDER BY SAL DESC) DENSE_RANK_순위,
+  4            ROW_NUMBER() OVER(ORDER BY SAL DESC)  ROW_NUMBER_순위
+  5  FROM emp;
+
+이름             급여  RANK_순위 DENSE_RANK_순위 ROW_NUMBER_순위                
+---------- ---------- ---------- --------------- ---------------                
+KING             5000          1               1               1                
+FORD             3000          2               2               2                
+SCOTT            3000          2               2               3                
+JONES            2975          4               3               4                
+BLAKE            2850          5               4               5                
+LEE_HK           2450          6               5               6                
+CLARK            2450          6               5               7                
+ALLEN            1600          8               6               8                
+TURNER           1500          9               7               9                
+MILLER           1300         10               8              10                
+WARD             1250         11               9              11                
+
+이름             급여  RANK_순위 DENSE_RANK_순위 ROW_NUMBER_순위                
+---------- ---------- ---------- --------------- ---------------                
+MARTIN           1250         11               9              12                
+ADAMS            1100         13              10              13                
+JAMES             950         14              11              14                
+SMITH             800         15              12              15                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, job 직급, RANK() OVER(PARTITION BY job ORDER BY SAL DESC) 순위
+  2  FROM emp;
+
+이름             급여 직급            순위                                      
+---------- ---------- --------- ----------                                      
+FORD             3000 ANALYST            1                                      
+SCOTT            3000 ANALYST            1                                      
+MILLER           1300 CLERK              1                                      
+ADAMS            1100 CLERK              2                                      
+JAMES             950 CLERK              3                                      
+SMITH             800 CLERK              4                                      
+JONES            2975 MANAGER            1                                      
+BLAKE            2850 MANAGER            2                                      
+CLARK            2450 MANAGER            3                                      
+LEE_HK           2450 MANAGER            3                                      
+KING             5000 PRESIDENT          1                                      
+
+이름             급여 직급            순위                                      
+---------- ---------- --------- ----------                                      
+ALLEN            1600 SALESMAN           1                                      
+TURNER           1500 SALESMAN           2                                      
+MARTIN           1250 SALESMAN           3                                      
+WARD             1250 SALESMAN           3                                      
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+  2   FROM emp order by empno;
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+SMITH             800          4                                                
+ALLEN            1600          2                                                
+WARD             1250          3                                                
+JONES            2975          1                                                
+MARTIN           1250          3                                                
+BLAKE            2850          2                                                
+CLARK            2450          2                                                
+SCOTT            3000          1                                                
+KING             5000          1                                                
+TURNER           1500          3                                                
+ADAMS            1100          4                                                
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+JAMES             950          4                                                
+FORD             3000          1                                                
+MILLER           1300          3                                                
+LEE_HK           2450          2                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+  2  FROM emp order by NTILE등분;
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+SCOTT            3000          1                                                
+FORD             3000          1                                                
+KING             5000          1                                                
+JONES            2975          1                                                
+CLARK            2450          2                                                
+LEE_HK           2450          2                                                
+BLAKE            2850          2                                                
+ALLEN            1600          2                                                
+TURNER           1500          3                                                
+MILLER           1300          3                                                
+WARD             1250          3                                                
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+MARTIN           1250          3                                                
+ADAMS            1100          4                                                
+JAMES             950          4                                                
+SMITH             800          4                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> SELECT ename 이름, sal 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분
+  2  FROM emp order by NTILE(4);
+FROM emp order by NTILE(4)
+                  *
+2행에 오류:
+ORA-30484: 이 함수에 대한 윈도우 지정이 없습니다 
+
+
+SQL> SELECT E.NAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP E ORDER BY NTILE(4);
+SELECT E.NAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP E ORDER BY NTILE(4)
+                                                                                             *
+1행에 오류:
+ORA-30484: 이 함수에 대한 윈도우 지정이 없습니다 
+
+
+SQL> SELECT E.NAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP E ORDER BY NTILE등분;
+SELECT E.NAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP E ORDER BY NTILE등분
+       *
+1행에 오류:
+ORA-00904: "E"."NAME": 부적합한 식별자 
+
+
+SQL> SELECT ㄷNAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP ORDER BY NTILE등분;
+SELECT ㄷNAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP ORDER BY NTILE등분
+       *
+1행에 오류:
+ORA-00904: "ㄷNAME": 부적합한 식별자 
+
+
+SQL> SELECT ENAME 이름, SAL 급여, NTILE(4) OVER(ORDER BY SAL DESC) NTILE등분 FROM EMP ORDER BY NTILE등분;
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+SCOTT            3000          1                                                
+FORD             3000          1                                                
+KING             5000          1                                                
+JONES            2975          1                                                
+CLARK            2450          2                                                
+LEE_HK           2450          2                                                
+BLAKE            2850          2                                                
+ALLEN            1600          2                                                
+TURNER           1500          3                                                
+MILLER           1300          3                                                
+WARD             1250          3                                                
+
+이름             급여  NTILE등분                                                
+---------- ---------- ----------                                                
+MARTIN           1250          3                                                
+ADAMS            1100          4                                                
+JAMES             950          4                                                
+SMITH             800          4                                                
+
+15 개의 행이 선택되었습니다.
+
+SQL> -----실습과제 1-----
+SQL> SELECT E.ENAME 이름, E.DEPTNO 부서번호, E.ENAME 상사이름, E2.DEPTNO 상사부서
+  2  FROM EMP E
+  3  INNER JOIN EMP E2 ON E.MGR = E2.EMPNO;
+
+이름         부서번호 상사이름     상사부서                                     
+---------- ---------- ---------- ----------                                     
+FORD               20 FORD               20                                     
+SCOTT              20 SCOTT              20                                     
+JAMES              30 JAMES              30                                     
+TURNER             30 TURNER             30                                     
+MARTIN             30 MARTIN             30                                     
+WARD               30 WARD               30                                     
+ALLEN              30 ALLEN              30                                     
+MILLER             10 MILLER             10                                     
+ADAMS              20 ADAMS              20                                     
+CLARK              10 CLARK              10                                     
+BLAKE              30 BLAKE              10                                     
+
+이름         부서번호 상사이름     상사부서                                     
+---------- ---------- ---------- ----------                                     
+JONES              20 JONES              10                                     
+LEE_HK             10 LEE_HK             10                                     
+SMITH              20 SMITH              20                                     
+
+14 개의 행이 선택되었습니다.
+
+SQL> -----실습 과제 2-----
+SQL> INSERT INTO SALGRADE VALUES(6,10000,20000);
+INSERT INTO SALGRADE VALUES(6,10000,20000)
+                              *
+1행에 오류:
+ORA-01438: 이 열에 대해 지정된 전체 자릿수보다 큰 값이 허용됩니다. 
+
+
+SQL> SELECT * FROM SALGRADE;
+
+     GRADE      LOSAL      HISAL                                                
+---------- ---------- ----------                                                
+         1        700       1200                                                
+         2       1201       1400                                                
+         3       1401       2000                                                
+         4       2001       3000                                                
+         5       3001       9999                                                
+
+SQL> CREATE TABLE SALGRADE (
+  2      GRADE NUMBER(2),
+  3      LOSAL NUMBER(5),
+  4      HISAL NUMBER(5)
+  5  );
+CREATE TABLE SALGRADE (
+             *
+1행에 오류:
+ORA-00955: 기존의 객체가 이름을 사용하고 있습니다. 
+
+
+SQL> ALTER TABLE SALGRADE
+  2  MODIFY (LOSAL NUMBER(5), HISAL NUMBER(5));
+
+테이블이 변경되었습니다.
+
+SQL> 
+SQL> INSERT INTO salgrade values(6, 10000,20000);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> SELECT * FROM salgrade;
+
+     GRADE      LOSAL      HISAL                                                
+---------- ---------- ----------                                                
+         1        700       1200                                                
+         2       1201       1400                                                
+         3       1401       2000                                                
+         4       2001       3000                                                
+         5       3001       9999                                                
+         6      10000      20000                                                
+
+6 개의 행이 선택되었습니다.
+
+SQL> COMMIT;
+
+커밋이 완료되었습니다.
+
+SQL> SELECT E.ENAME, E.SAL, COALESCE(E2.GRADE, 6) AS GRADE
+  2  FROM EMP E, SALGRADE E2
+  3  WHERE E.SAL > E2.LOSAL AND E.SAL < E2.HISAL;
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+SMITH             800          1                                                
+JAMES             950          1                                                
+ADAMS            1100          1                                                
+WARD             1250          2                                                
+MARTIN           1250          2                                                
+MILLER           1300          2                                                
+TURNER           1500          3                                                
+ALLEN            1600          3                                                
+LEE_HK           2450          4                                                
+CLARK            2450          4                                                
+BLAKE            2850          4                                                
+
+ENAME             SAL      GRADE                                                
+---------- ---------- ----------                                                
+JONES            2975          4                                                
+SCOTT            3000          4                                                
+FORD             3000          4                                                
+KING             5000          5       
+	                      6                                                  
+
+13 개의 행이 선택되었습니다.
+
+SQL> -----실습 과제3-----
+SQL> SELECT ENAME, DEPTNO, SAL
+  2  FROM (
+  3      SELECT ENAME, DEPTNO, SAL, RANK() OVER (PARTITION BY DEPTNO ORDER BY SAL DESC) AS SAL_RANK
+  4      FROM EMP
+  5  ) ranked
+  6  WHERE SAL_RANK = 1
+  7  ORDER BY DEPTNO;
+
+ENAME          DEPTNO        SAL                                                
+---------- ---------- ----------                                                
+KING               10       5000                                                
+SCOTT              20       3000                                                
+FORD               20       3000                                                
+BLAKE              30       2850                                                
+
+SQL> SPOOL OFF
