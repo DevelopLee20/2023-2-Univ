@@ -26,13 +26,13 @@ class State:
     return result
 
   # 객체를 출력할 때 사용한다. 
-  def __str__(self):
+  def __str__(self): # 객체에 print 문을 사용했을 때 반환
     return str(self.board[:3]) +"\n"+\
     str(self.board[3:6]) +"\n"+\
     str(self.board[6:]) +"\n"+\
     "------------------"
 
-  def __eq__(self, other):
+  def __eq__(self, other): # 객체에 조건문을 사용해서 == true를 반환했을 때 사용
     return self.board == other.board
 
 # 초기 상태
