@@ -7,7 +7,7 @@ import matplotlib.pylab as pylab
 
 def sarsa(env, gamma=1.0, init_alpha=0.5, min_alpha=0.01, 
           alpha_decay_ratio=0.5, init_epsilon=1.0, min_epsilon=0.1, 
-          epsilon_decay_ratio=0.9, n_episodes=3000):''
+          epsilon_decay_ratio=0.9, n_episodes=3000):
     nS = WIDTH * HEIGHT
     nA = 4
     alpha = init_alpha
@@ -15,7 +15,8 @@ def sarsa(env, gamma=1.0, init_alpha=0.5, min_alpha=0.01,
     
     Q = np.zeros((nS, nA), dtype=np.float64)
     q_table = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
-    select_action = lambda state, Q, eps: np.argmax(Q[state]) if np.random.random() > eps else np.random.randint(len(Q[state]))
+    select_action = lambda state, Q, eps: \
+        np.argmax(Q[state]) if np.random.random() > eps else np.random.randint(len(Q[state]))
 
     exit_track = []
     
@@ -30,8 +31,10 @@ def sarsa(env, gamma=1.0, init_alpha=0.5, min_alpha=0.01,
             next_action = select_action(next_state, Q, epsilon)
             td_target = reward + gamma * Q[next_state][next_action] * (not done)
             td_error = td_target - Q[state][action]
+
+            # alphas에 대한 정의가 없다. (alphas는 alpha의 경험 튜플일 것이다.)
             # Q[state][action] = Q[state][action] + alphas[e] * td_error
-            Q[state][action] = Q[state][action] + alpha * td_error # alphas에 대한 정의가 없다. (alphas는 alpha의 경험 튜플일 것이다.)
+            Q[state][action] = Q[state][action] + alpha * td_error
 
             x = state % WIDTH
             y = state // WIDTH
@@ -40,12 +43,14 @@ def sarsa(env, gamma=1.0, init_alpha=0.5, min_alpha=0.01,
             state, action = next_state, next_action
             env.print_value_all(q_table)
         
+        # 하나의 에피소드가 종료할 때 마다 알파값과 입실론값을 감가
         if (alpha > min_alpha):
             alpha *= alpha_decay_ratio
 
         if (epsilon > min_epsilon):
             epsilon *= epsilon_decay_ratio
 
+        # 도착 후 가치가 100을 달성하면, 성공으로 판단
         if (reward == 100):
             exit_track.append(1)
         else:

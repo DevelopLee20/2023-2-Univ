@@ -126,9 +126,12 @@ class Env(tk.Tk):
         next_state = self.canvas.coords(self.rectangle)
 
         # 보상 함수
+        # 목표 상태에 도달 시 보상 100 획득 후 에피소드 종료
         if next_state == self.canvas.coords(self.circle):
             reward = 100
             done = True
+            
+        # 가면 안되는 곳을 가면 보상 -100 을 획득 후 에피소드 종료
         elif next_state in [self.canvas.coords(self.triangle1),
                             self.canvas.coords(self.triangle2)]:
             reward = -100

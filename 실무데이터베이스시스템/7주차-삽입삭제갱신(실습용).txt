@@ -1,0 +1,305 @@
+/*
+==============
+TUPLE의 추가(37쪽)
+==============
+*/
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES (50,'DEVELOPMENT', 'DETROIT');
+
+SELECT * FROM DEPT;
+
+/*
+======================
+입력사항 취소하기 (ROLLBACK; )
+=======================
+*/
+
+ROLLBACK;  
+SELECT * FROM DEPT;
+
+--> 이제 다시 시도하여 입력을 완료해보자
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES (50,'DEVELOPMENT', 'DETROIT');
+
+SELECT * FROM DEPT;
+
+/*
+======================
+입력사항 확정하기 (COMMIT; )
+=======================
+*/
+
+COMMIT;
+
+ROLLBACK;
+SELECT * FROM DEPT;
+
+-----> 이제 취소할 수가 없다!!!
+
+/*
+입력 내용이 저장되는 단계를 확인해보자
+먼저 SCOTT계정에 조회  권한을 주자
+*/
+
+GRANT SELECT ON DEPT TO SCOTT;
+INSERT INTO DEPT
+VALUES (70,'PURCHASING', 'ATLANTA');
+----> SCOTT계정에서 확인해보자
+
+COMMIT;
+----> SCOTT계정에서 확인해보자
+
+/*
+======================
+** NULL값의 입력 **
+=======================
+*/
+
+--명시적 방법
+INSERT INTO DEPT(DEPTNO, DNAME)
+VALUES (65, 'MIS');
+
+--암시적방법
+INSERT INTO DEPT
+VALUES (80,'FINANCE', NULL);
+
+
+--변수 이용하기
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES (&DEPTID, &DEPARTNAME, &LOCATION);
+
+
+--입력시 인용부호를 안쓰려면...
+
+INSERT INTO DEPT(DEPTNO, DNAME, LOC)
+VALUES (&DEPTID, '&DEPARTNAME', '&LOCATION');
+
+
+--다른테이블의 내용 복사
+--먼저  MANAGER 테이블을 만든다
+--여기에 질의식을 이용하여 튜플을 삽입해본다
+
+CREATE TABLE MANAGER (
+ ID                 NUMBER(4) PRIMARY KEY,
+ NAME               VARCHAR2(10),
+ SALARY             NUMBER(7,2),
+ HIREDATE           DATE);
+
+INSERT INTO MANAGER(ID, NAME, SALARY, HIREDATE)
+            (SELECT EMPNO, ENAME, SAL, HIREDATE
+	     FROM EMP
+	     WHERE JOB='MANAGER');
+/*
+======================
+시스템의 CLOCK값(SYSDATE) 삽입
+=======================
+*/
+
+
+INSERT INTO EMP
+VALUES (7196,'GREEN','SALESMAN',7782,SYSDATE,2000,NULL,10);
+
+/*
+=======================
+SEQUENCE : 자동으로 유일번호 생성
+=======================
+*/
+
+CREATE SEQUENCE dept_deptno
+   INCREMENT BY 1
+   START WITH 91
+   MAXVALUE 100
+   NOCYCLE
+   NOCACHE;
+
+SELECT dept_deptno.NEXTVAL FROM DUAL;  
+---> 한번 수행할 떄 마다  값을 증가시킴 *
+
+SELECT dept_deptno.CURRVAL FROM DUAL;
+---->  현재값만을 조회 (NEXTVAL이 선행되어야 함) 
+
+---->시퀀스를 이용한 삽입 예제
+
+INSERT INTO dept(deptno,dname,loc)
+VALUES (dept_deptno.NEXTVAL, 'FINANCE', 'SAN FRANCISCO');
+SELECT * FROM DEPT;
+
+/*
+시퀀스 값의 원상 복구
+1. 시퀀스를 삭제 한 후 다시 생성
+     DROP SEQUENCE dept_deptno;
+
+2. 다음과 같은 방법도 있음
+*/
+
+ALTER SEQUENCE dept_deptno INCREMENT BY -3;
+SELECT dept_deptno.NEXTVAL FROM DUAL      /* INCREMENT BY -3를 적용함*/;
+ALTER SEQUENCE dept_deptno INCREMENT BY 1;
+
+/*
+===============
+갱신 (UPDATE, 38쪽)
+===============
+*/
+
+UPDATE EMP
+SET DEPTNO =20, SAL =500
+WHERE EMPNO = 7782;
+-->
+SELECT * FROM EMP;
+
+-- >만약 다음과 같이 수행하면???
+
+UPDATE EMP
+SET DEPTNO =60, SAL =500
+WHERE EMPNO = 7782;
+
+-----> 참조무결성 위배(Why?)
+
+/* 주의!! 조건이 생략되면 모든행을 갱신 */
+
+UPDATE EMP
+SET DEPTNO =20, SAL =500;
+
+
+--> 서브퀴리에 의한 갱신도 가능할까?
+
+UPDATE EMP
+SET (JOB,DEPTNO) = (SELECT JOB,DEPTNO
+		    FROM EMP
+		    WHERE EMPNO =7499)
+WHERE EMPNO = 7698;
+
+ROLLBACK;
+
+/*
+===============
+행의 삭제  ( 38쪽)
+===============
+*/
+
+DELETE FROM DEPT
+WHERE DEPTNO = 50;
+
+
+DELETE FROM DEPT
+WHERE DEPTNO = 30;
+------> 참조무결성 위배의 예
+
+ROLLBACK;
+
+/*
+===========
+트랜잭션 관리
+===========
+시스템의 변동사항을 모은 것을 트랜잭션이라고 함.
+INSERT/DELETE/UPDATE는 시스템에 변동을 가져온다.
+
+변동에 대한 처리 방법 --->트랜잭션 관리
+
+
+1) 시작 : 실행가능한 SQL문장(INSERT/DELETE/UPDATE)이 처음 실행될때
+2) 종료 : 다음의 이벤트 중 어느하나
+     (명시적종료)
+	-COMMIT/ROLLBACK 
+     (암시적 종료)
+	-DDL/DCL의 실행 (자동커밋 수행됨 )
+	-사용자 종료(자동커밋 수행됨 )
+	-시스템 파손(자동롤백 수행됨 )
+
+COMMIT;
+
+SAVEPOINT : 일정시점에 MARKER를 표시한다
+예
+SAVEPOINT T1;
+...
+ROLLBACK TO T1;
+
+예제
+UPDATE EMP SET SAL =1 WHERE EMPNO = 7369;
+SAVEPOINT T1;
+
+UPDATE EMP SET SAL =2 WHERE EMPNO = 7369;
+SAVEPOINT T2;
+
+UPDATE EMP SET SAL =3 WHERE EMPNO = 7369;
+SAVEPOINT T3;
+ 
+UPDATE EMP SET SAL =4 WHERE EMPNO = 7369;
+SAVEPOINT T4;
+
+UPDATE EMP SET SAL =5 WHERE EMPNO = 7369;
+
+ROLLBACK TO T3;
+SELECT * FROM EMP;
+
+ROLLBACK TO T1;
+SELECT * FROM EMP;
+
+ROLLBACK;
+SELECT * FROM EMP;
+
+/*
+
+연습문제
+=====================================================================
+1. 다음과 같이 테이블 EMP_SUMMARY를 생성하시오.
+
+        EMPNO    NUMBER(4),
+        ENAME    VARCHAR2(10),
+        JOB      VARCHAR2(9),
+        INCOME   NUMBER(7, 2),
+        DNAME    VARCHAR2(14))
+
+   단, PRIMARY KEY는 EMPNO로 지정할 것!
+
+-----> 다음을 수행
+CREATE TABLE EMP_SUMMARY
+       (EMPNO NUMBER(4) PRIMARY KEY,
+        ENAME VARCHAR2(10),
+        JOB VARCHAR2(9),
+        INCOME NUMBER(7, 2),
+        DNAME VARCHAR2(14));
+
+자! 이제
+   테이블 EMP, DEPT로부터 INCOME과 부서이름을 구하여 EMP_SUMMARY에 튜플을 삽입하시오
+   단, 연봉은 SAL*12 + COMM 이며 COMM이 NULL이면 0으로 처리
+
+2. SMITH의 연봉을 ALLEN의 연봉으로 수정하시오
+
+3. SAL이 2000 이상인 직원을 EMP_SUMMARY에서 삭제하시오
+=======================================
+
+4. 주문번호 자동발생(다음주까지 수행)
+
+우선 주문 테이블을 다음과 같이 생성
+
+CREATE TABLE 주문 
+    (주문번호 CHAR(12));
+
+아래처럼 주문번호를 자동으로 삽입이 되도록 INSERT문을 만드시오
+
+
+SELECT * FROM 주문;
+
+주문번호
+------------
+20201014001
+20201014002
+20201014003
+20201014004
+20201014005
+20201014006
+20201014007
+20201014008
+20201014009
+20201014010
+20201014011
+11 개의 행이 선택되었습니다.
+
+====================================================================
+*/
+
