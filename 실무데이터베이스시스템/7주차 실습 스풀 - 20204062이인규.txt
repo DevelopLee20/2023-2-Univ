@@ -808,5 +808,103 @@ SQL> select * from emp_summary;
 
 9 개의 행이 선택되었습니다.
 
+SQL> -----4번 문제
+
+SQL> CREATE TABLE 주문
+  2      (주문번호 CHAR(12));
+
+테이블이 생성되었습니다.
+
+SQL> SELECT * FROM 주문;
+
+선택된 레코드가 없습니다.
+
+SQL> CREATE SEQUENCE create_jumun
+  2  INCREMENT BY 1
+  3  START WITH 20201014000
+  4  NOCYCLE
+  5  NOCACHE;
+
+시퀀스가 생성되었습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from 주문;
+
+주문번호                                                                        
+------------                                                                    
+20201014000                                                                     
+20201014001                                                                     
+20201014002                                                                     
+20201014003                                                                     
+20201014004                                                                     
+20201014005                                                                     
+20201014006                                                                     
+20201014007                                                                     
+20201014008                                                                     
+20201014009                                                                     
+
+10 개의 행이 선택되었습니다.
+
+SQL> INSERT INTO 주문 (주문번호) VALUES (TO_CHAR(create_jumun.NEXTVAL));
+
+1 개의 행이 만들어졌습니다.
+
+SQL> select * from 주문;
+
+주문번호                                                                        
+------------                                                                    
+20201014000                                                                     
+20201014001                                                                     
+20201014002                                                                     
+20201014003                                                                     
+20201014004                                                                     
+20201014005                                                                     
+20201014006                                                                     
+20201014007                                                                     
+20201014008                                                                     
+20201014009                                                                     
+20201014010                                                                     
+
+11 개의 행이 선택되었습니다.
 
 SQL> spool off
+
