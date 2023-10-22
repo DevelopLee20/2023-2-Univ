@@ -45,11 +45,11 @@ class Env(tk.Tk):
 
     def load_images(self):
         rectangle = PhotoImage(
-            Image.open("./img/rectangle.png").resize((65, 65)))
+            Image.open("C:/Users/dldls/OneDrive/바탕 화면/2학기 수업자료/강화학습/소스코드/그리드월드/img/rectangle.png").resize((65, 65)))
         triangle = PhotoImage(
-            Image.open("./img/triangle.png").resize((65, 65)))
+            Image.open("C:/Users/dldls/OneDrive/바탕 화면/2학기 수업자료/강화학습/소스코드/그리드월드/img/triangle.png").resize((65, 65)))
         circle = PhotoImage(
-            Image.open("./img/circle.png").resize((65, 65)))
+            Image.open("C:/Users/dldls/OneDrive/바탕 화면/2학기 수업자료/강화학습/소스코드/그리드월드/img/circle.png").resize((65, 65)))
 
         return rectangle, triangle, circle
 
