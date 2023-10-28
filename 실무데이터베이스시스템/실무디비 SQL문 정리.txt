@@ -1,0 +1,9 @@
+실무 디비 SQL문 정리
+SELECT
+FROM
+ORDER BY - 정렬
+DESC 내림차순
+ASC 오름차순
+COALESCE(COLUMN, '대체할 값')
+GROUP BY COL1, COL2 - 그룹으로 묶어서 비교할 때 사용
+HAVING COUNT(*) >= 2 - HAVING이 조건문 쓸 때 사용, COUNT가 GROUP의 전체가 동일한 ROW를 세서 반환
