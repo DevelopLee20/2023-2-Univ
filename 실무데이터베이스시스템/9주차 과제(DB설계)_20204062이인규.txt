@@ -1,0 +1,307 @@
+LEEINGYU>CREATE TABLE 학과(
+  2  학과이름 CHAR(16),
+  3  학과사무실 CHAR(8) NOT NULL,
+  4  CONSTRAINT 학과_PK PRIMARY KEY (학과이름)
+  5  );
+
+테이블이 생성되었습니다.
+
+LEEINGYU>
+LEEINGYU>CREATE TABLE 교수(
+  2  교수번호 NUMBER(4),
+  3  교수이름 CHAR(16),
+  4  학과이름 CHAR(16) NOT NULL,
+  5  CONSTRAINT 교수_PK PRIMARY KEY (교수번호),
+  6  CONSTRAINT 교수_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름)
+  7  );
+
+테이블이 생성되었습니다.
+
+LEEINGYU>
+LEEINGYU>CREATE TABLE 학생(
+  2  학번 NUMBER(10),
+  3  학생이름 CHAR(16),
+  4  학과이름 CHAR(16) NOT NULL,
+  5  교수번호 NUMBER(4) NOT NULL,
+  6  CONSTRAINT 학생_PK PRIMARY KEY (학번),
+  7  CONSTRAINT 학생_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름),
+  8  CONSTRAINT 학생_교수_FK FOREIGN KEY(교수번호) REFERENCES 교수(교수번호)
+  9  );
+
+테이블이 생성되었습니다.
+
+LEEINGYU>
+LEEINGYU>CREATE TABLE 과목(
+  2  과목이름 CHAR(16),
+  3  과목구분 CHAR(16),
+  4  학과이름 CHAR(16) NOT NULL,
+  5  교수번호 NUMBER(4) NOT NULL,
+  6  CONSTRAINT 과목_PK PRIMARY KEY (과목이름),
+  7  CONSTRAINT 과목_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름),
+  8  CONSTRAINT 과목_교수_FK FOREIGN KEY(교수번호) REFERENCES 교수(교수번호),
+  9  CONSTRAINT 과목_CK CHECK (과목구분 IN ('교양', '학초', '전공'))
+ 10  );
+
+테이블이 생성되었습니다.
+
+LEEINGYU>
+LEEINGYU>CREATE TABLE 수강(
+  2  학번 NUMBER(10),
+  3  과목이름 CHAR(16) NOT NULL,
+  4  성적 NUMBER(4),
+  5  CONSTRAINT 수강_PK PRIMARY KEY (학번, 과목이름),
+  6  CONSTRAINT 수강_학생_FK FOREIGN KEY (학번) REFERENCES 학생(학번),
+  7  CONSTRAINT 수강_과목_FK FOREIGN KEY(과목이름) REFERENCES 과목(과목이름),
+  8  CONSTRAINT 수강_CK CHECK (성적 <= 100)
+  9  );
+
+테이블이 생성되었습니다.
+
+LEEINGYU>
+LEEINGYU>INSERT INTO 학과 VALUES ('컴퓨터공학과','M609');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학과 VALUES ('전기공학과','M509');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학과 VALUES ('전자공학과','M109');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>
+LEEINGYU>INSERT INTO 교수 VALUES (101, '이해각', '컴퓨터공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (102, '홍인식', '컴퓨터공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (103, '천인국', '컴퓨터공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (201, '차귀수', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (202, '전창완', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (203, '임종식', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (301, '박광민', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (302, '김은성', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 교수 VALUES (303, '김두용', '전기공학과');
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>
+LEEINGYU>INSERT INTO 학생 VALUES (200050100, '김유신', '컴퓨터공학과', 101);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학생 VALUES (200050101, '강감찬', '컴퓨터공학과', 101);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학생 VALUES (200050102, '이율곡', '전기공학과', 201);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학생 VALUES (200050103, '이순신', '전기공학과', 301);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 학생 VALUES (200050104, '이사부', '전기공학과', 302);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>
+LEEINGYU>INSERT INTO 과목 VALUES ('화일처리', '전공', '컴퓨터공학과', 102);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 과목 VALUES ('선형대수', '학초', '컴퓨터공학과', 103);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 과목 VALUES ('진로개발', '교양', '컴퓨터공학과', 101);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 과목 VALUES ('데이터베이스', '전공', '컴퓨터공학과', 101);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>
+LEEINGYU>INSERT INTO 수강 VALUES (200050100, '데이터베이스', 80);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 수강 VALUES (200050100, '화일처리', 90);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 수강 VALUES (200050101, '데이터베이스', 70);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>INSERT INTO 수강 VALUES (200050101, '화일처리', 100);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>
+LEEINGYU>SELECT * FROM 교수;
+
+  교수번호 교수이름         학과이름                                                                                    
+---------- ---------------- ----------------                                                                            
+       101 이해각           컴퓨터공학과                                                                                
+       102 홍인식           컴퓨터공학과                                                                                
+       103 천인국           컴퓨터공학과                                                                                
+       201 차귀수           전기공학과                                                                                  
+       202 전창완           전기공학과                                                                                  
+       203 임종식           전기공학과                                                                                  
+       301 박광민           전기공학과                                                                                  
+       302 김은성           전기공학과                                                                                  
+       303 김두용           전기공학과                                                                                  
+
+9 개의 행이 선택되었습니다.
+
+LEEINGYU>SELECT * FROM 학생;
+
+      학번 학생이름         학과이름           교수번호                                                                 
+---------- ---------------- ---------------- ----------                                                                 
+ 200050100 김유신           컴퓨터공학과            101                                                                 
+ 200050101 강감찬           컴퓨터공학과            101                                                                 
+ 200050102 이율곡           전기공학과              201                                                                 
+ 200050103 이순신           전기공학과              301                                                                 
+ 200050104 이사부           전기공학과              302                                                                 
+
+LEEINGYU>SELECT * FROM 과목;
+
+과목이름         과목구분         학과이름           교수번호                                                           
+---------------- ---------------- ---------------- ----------                                                           
+화일처리         전공             컴퓨터공학과            102                                                           
+선형대수         학초             컴퓨터공학과            103                                                           
+진로개발         교양             컴퓨터공학과            101                                                           
+데이터베이스     전공             컴퓨터공학과            101                                                           
+
+LEEINGYU>SELECT * FROM 수강;
+
+      학번 과목이름               성적                                                                                  
+---------- ---------------- ----------                                                                                  
+ 200050100 데이터베이스             80                                                                                  
+ 200050100 화일처리                 90                                                                                  
+ 200050101 데이터베이스             70                                                                                  
+ 200050101 화일처리                100                                                                                  
+
+LEEINGYU>-----특정학과(컴퓨터공학과)에 속하는 교수명단을 조회-----
+LEEINGYU>SELECT * FROM 교수
+  2  WHERE 학과이름 = '컴퓨터공학과';
+
+  교수번호 교수이름         학과이름                                                                                    
+---------- ---------------- ----------------                                                                            
+       101 이해각           컴퓨터공학과                                                                                
+       102 홍인식           컴퓨터공학과                                                                                
+       103 천인국           컴퓨터공학과                                                                                
+
+LEEINGYU>-----특정교수(이해각 교수님)의 지도학생 명단을 조회(전체 검색)-----
+LEEINGYU>SELECT * FROM 학생
+  2  WHERE 교수번호 = (
+  3  SELECT 교수번호 FROM 교수
+  4  WHERE 교수이름 = '이해각'
+  5  );
+
+      학번 학생이름         학과이름           교수번호                                                                 
+---------- ---------------- ---------------- ----------                                                                 
+ 200050100 김유신           컴퓨터공학과            101                                                                 
+ 200050101 강감찬           컴퓨터공학과            101                                                                 
+
+LEEINGYU>-----특정학과의 교과목을 개설하고 담당교수를 입력-----
+LEEINGYU>INSERT INTO 과목 VALUES ('실무데이터베이스', '전공', '컴퓨터공학과', 101);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>SELECT * FROM 과목;
+
+과목이름         과목구분         학과이름           교수번호                                                           
+---------------- ---------------- ---------------- ----------                                                           
+화일처리         전공             컴퓨터공학과            102                                                           
+선형대수         학초             컴퓨터공학과            103                                                           
+진로개발         교양             컴퓨터공학과            101                                                           
+데이터베이스     전공             컴퓨터공학과            101                                                           
+실무데이터베이스 전공             컴퓨터공학과            101                                                           
+
+LEEINGYU>-----특정학과(컴퓨터공학과)에서 개설한 과목을 조회(전체 검색)-----
+LEEINGYU>SELECT * FROM 과목
+  2  WHERE 학과이름 = '컴퓨터공학과';
+
+과목이름         과목구분         학과이름           교수번호                                                           
+---------------- ---------------- ---------------- ----------                                                           
+화일처리         전공             컴퓨터공학과            102                                                           
+선형대수         학초             컴퓨터공학과            103                                                           
+진로개발         교양             컴퓨터공학과            101                                                           
+데이터베이스     전공             컴퓨터공학과            101                                                           
+실무데이터베이스 전공             컴퓨터공학과            101                                                           
+
+LEEINGYU>-----학생이 수강할 수 있는 과목명(소속학과 과목)과 담당교수이름을 검색할 수 있고 수강신청-----
+LEEINGYU>SELECT * FROM 과목
+  2  WHERE 학과이름 = '컴퓨터공학과';
+
+과목이름         과목구분         학과이름           교수번호                                                           
+---------------- ---------------- ---------------- ----------                                                           
+화일처리         전공             컴퓨터공학과            102                                                           
+선형대수         학초             컴퓨터공학과            103                                                           
+진로개발         교양             컴퓨터공학과            101                                                           
+데이터베이스     전공             컴퓨터공학과            101                                                           
+실무데이터베이스 전공             컴퓨터공학과            101                                                           
+
+LEEINGYU>SELECT * FROM 과목
+  2  WHERE 교수번호 = (
+  3  SELECT 교수번호 FROM 교수
+  4  WHERE 교수이름 = '이해각'
+  5  );
+
+과목이름         과목구분         학과이름           교수번호                                                           
+---------------- ---------------- ---------------- ----------                                                           
+진로개발         교양             컴퓨터공학과            101                                                           
+데이터베이스     전공             컴퓨터공학과            101                                                           
+실무데이터베이스 전공             컴퓨터공학과            101                                                           
+
+LEEINGYU>SELECT * FROM 수강;
+
+      학번 과목이름               성적                                                                                  
+---------- ---------------- ----------                                                                                  
+ 200050100 데이터베이스             80                                                                                  
+ 200050100 화일처리                 90                                                                                  
+ 200050101 데이터베이스             70                                                                                  
+ 200050101 화일처리                100                                                                                  
+
+LEEINGYU>INSERT INTO 수강 VALUES (200050101, '실무데이터베이스', NULL);
+
+1 개의 행이 만들어졌습니다.
+
+LEEINGYU>SELECT * FROM 수강;
+
+      학번 과목이름               성적                                                                                  
+---------- ---------------- ----------                                                                                  
+ 200050100 데이터베이스             80                                                                                  
+ 200050100 화일처리                 90                                                                                  
+ 200050101 데이터베이스             70                                                                                  
+ 200050101 화일처리                100                                                                                  
+ 200050101 실무데이터베이스                                                                                             
+
+LEEINGYU>SPOOL OFF
+
