@@ -1,0 +1,13 @@
+conn system/Manager7083
+ CREATE USER student identified by student
+       DEFAULT TABLESPACE student;
+
+grant connect, resource to student;
+
+conn student/student
+
+CREATE TABLE member(
+       member_id VARCHAR(10) NOT NULL,
+       member_name VARCHAR(30) NOT NULL,
+       member_pw VARCHAR(30) NOT NULL,
+       CONSTRAINT member_PK PRIMARY KEY (member_id));

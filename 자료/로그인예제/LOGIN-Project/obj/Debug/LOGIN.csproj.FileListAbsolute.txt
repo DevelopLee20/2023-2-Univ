@@ -1,0 +1,33 @@
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.exe.config
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\bin\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csprojAssemblyReference.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Form1.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Form2.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\DB TERM-PROJECT\obj\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csprojAssemblyReference.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form1.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form2.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\user\Documents\1.강의자료\2.실무DB\비주얼스튜디오예제\로그인예제\LOGIN-Project\obj\Debug\LOGIN.pdb
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe.config
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\bin\Debug\LOGIN.exe
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\bin\Debug\LOGIN.pdb
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.AssemblyReference.cache
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form1.resources
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Form2.resources
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.Properties.Resources.resources
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.GenerateResource.cache
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.csproj.CoreCompileInputs.cache
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.exe
+C:\Users\dldls\OneDrive\바탕 화면\로그인예제\LOGIN-Project\obj\Debug\LOGIN.pdb
