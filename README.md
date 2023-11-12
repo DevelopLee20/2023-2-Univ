@@ -7,5 +7,9 @@ conda create -n study3-2 python=3.10
 ```
 
 ```python
+conda activate study3-2
+```
+
+```python
 pip install -r requirements.txt
 ```
