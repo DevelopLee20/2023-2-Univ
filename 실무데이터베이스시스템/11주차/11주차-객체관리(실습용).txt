@@ -1,0 +1,337 @@
+오늘의 학습 내용 : (오라클 객체)
+=====================
+1. 뷰
+2. 인덱스
+3. 동의어
+4. 코멘트
+====================
+
+1.뷰(VIEW)
+------------
+  -보고 싶은 것만 본다
+  -새로 만드는 것이 아니라 정의 하는 것이다.
+  -관계형DB의 가장 큰 장점 중의 하나
+  -DB OBJECT 중의 하나임
+
+----> DB OBJECT의 종류 : 테이블, 뷰, 시퀀스, 인덱스, 동의어
+
+뷰의 목적
+-----------
+  1. 액세스 제한
+  2. 질의를 간단히 (조인등의 질의를 미리 뷰로 정의하면 질의가 단순해짐
+  3. 데이터의 독립성 보장 (테이블 구조가 바뀌어도 응용프로그램에 일정한 형식 제공)
+  4. 동일한 데이터를 사용자별로 다르게 나타남 (예: USER_TABLES)
+
+**** 뷰를 만들기 위해서는 먼저 권한이 필요하다 ***
+
+SYSTEM>GRANT CREATE VIEW TO LHK7083;
+
+CREATE OR REPLACE VIEW EMP_10 AS
+  SELECT EMPNO, ENAME, JOB
+  FROM EMP
+  WHERE DEPTNO = 10;
+
+SELECT * FROM EMP_10;
+
+*** 뷰는 수시로 수정하여 사용하므로 
+CREATE  VIEW 보다는 대개 CREATE OR REPLACE VIEW 를 사용한다
+
+
+뷰의 권한을 다른 사용자에게 줘보자
+GRANT ALL ON EMP_10 TO SCOTT;
+
+SCOTT계정에서 확인해 보라
+
+뷰에서 수정한 사항이 DB에 반영이 될까?
+
+다음을 수행하면???
+
+UPDATE EMP_10
+SET ENAME='CCC';
+
+SELECT * FROM EMP; 
+
+반영된다!!!
+여기에선 롤백하자!
+rollback;
+
+
+====
+복합뷰
+====
+다음과 같이 복잡한 질의식이 자주 이용된다면
+미리 뷰를 만들어 놓고 사용하면 아주 편리하다
+
+create view summary as
+select a.empno,a.ename, b.dname, a.job, d.ename mgr, a.hiredate, a.sal, c.grade, a.comm
+from emp a, dept b, salgrade c, emp d
+where   (a.deptno = b.deptno)
+    and (a.sal between c.losal and c.hisal)
+    and (a.mgr=d.empno(+))
+order by a.empno;
+
+create OR REPLACE view summary as
+select a.empno,a.ename, b.dname, a.job, d.ename mgr, a.hiredate, a.sal, c.grade, a.comm
+from emp a, dept b, salgrade c, emp d
+where   (a.deptno = b.deptno)
+    and (a.sal between c.losal and c.hisal)
+    and (a.mgr=d.empno(+))
+order by a.empno;
+
+SELECT * FROM summary;
+
+복합 뷰에서도 삽입, 삭제, 수정이 가능할까?
+UPDATE summary
+SET ENAME='CCC';
+
+---> 안되는 이유를 곰곰히 생각해보라
+
+
+=================
+카타로그에 대한  뷰 만들기
+=================
+다음을 실행해보라
+
+SELECT *
+FROM ALL_TABLES;
+
+SELECT *
+FROM USER_TABLES;
+
+
+*** 다음의 뷰를 만들어보자..
+
+CREATE OR REPLACE VIEW MY_TABLES  AS
+        SELECT TABLE_NAME,TABLESPACE_NAME
+        FROM USER_TABLES;
+
+SELECT *
+FROM MY_TABLES;
+
+-----> 편하다!
+
+컬럼의 형식을 바꿀 때도 유용하다
+예를 들어 TO_CHAR(hiredate, 'YYYY-MM-DD')를 사용하여 입사일 포맷을 지정
+단, 함수가 컬럼명으로 사용이 불가하므로 다음과 같이 alias를 사용해야함
+
+CREATE OR REPLACE VIEW simple_emp 
+AS
+    SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD') as hiredate
+    FROM emp;
+
+select * from simple_emp;
+
+모든 컬럼에 대하여 alias를 주려면?
+---->
+CREATE OR REPLACE VIEW simple_emp (사원번호, 사원이름, 직책, 입사일)  
+AS
+    SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD') 
+    FROM emp;
+
+select * from simple_emp;
+
+다음과 같이   READ ONLY 옵션을 주면 어찌될까?
+----------------------------------------------
+CREATE OR REPLACE VIEW simple_emp (사원번호, 사원이름, 직책, 입사일) 
+AS
+    SELECT empno, ename, job, TO_CHAR(hiredate, 'YYYY-MM-DD')
+    FROM emp
+    WITH READ ONLY;
+
+select * from simple_emp;
+
+확인!!!
+--->
+UPDATE simple_emp
+SET ENAME='CCC';
+
+==========
+뷰의 구조 확인
+==========
+desc summary
+
+
+=======
+뷰의 삭제
+=======
+DROP VIEW EMP_10;
+DROP VIEW DEPT_SUM;
+DROP VIEW summary;
+DROP VIEW MY_TABLES;
+DROP VIEW simple_emp;
+
+
+
+
+=========
+2. 인덱스
+=========
+  -인덱스는 검색 속도를 향상시키는 좋은 방법
+  -B+ 트리를 만들고 이를 이용한 탐색이 이루어짐
+  -인덱스는 꼭 필요할 때만 만들자  ---> 남용하지는 말것
+  -인덱스는  insert, delete, update시에 부하가 발생 ---> 데이터베이스 성능을 저하
+  -인덱스는 SELECT를 위한 것이라고 보면 됨!!!
+
+CREATE INDEX emp_name_index ON EMP(ENAME);
+SELECT * FROM USER_INDEXES WHERE TABLE_NAME = 'EMP';
+
+CREATE  UNIQUE INDEX emp_name_index ON EMP(ENAME);
+ UNIQUE옵션을 사용하면 인덱스를 만든 필드는 중복값이 허용이 안됨
+---> UNIQUE 제약조건과 동일한 효과
+
+==========
+인덱스 조회하기
+==========
+SELECT INDEX_NAME, BLEVEL, LEAF_BLOCKS FROM USER_INDEXES WHERE TABLE_NAME = 'EMP';
+
+----> Primary Key, Unique Key는 기본적으로 인덱스가 자동으로 만들어 진다.
+
+
+====================
+인덱스(Index) 리빌드(Rebuild)
+ ====================
+인덱스는 트리로 구성되며 시스템의 운영에 따라  성능이 저하
+이론처럼 실시간으로 균형알고리즘이 동작하는 것은 아님
+잇다른 갱신에 의하여 불균형이 발생하고 트리의 깊이가 깊어짐
+---> 인덱스의 성능저하
+---> 리빌딩(트리를 다시 만들어 줌)
+
+과정은 간단하다!
+
+ALTER INDEX emp_name_index REBUILD;
+
+그러나!!!
+인덱스가 한두개가 아니다
+어찌해야할까???
+
+===================
+(Tip)전체 인덱스 리빌딩하기
+===================
+
+다음 질의로 일단 문장을 만들자
+
+SELECT 'ALTER INDEX '||INDEX_NAME||' REBUILD; 'FROM USER_INDEXES;
+
+이 결과식을 복사하여 실행
+
+**** 인덱스에 대한 고찰 ****
+1. 너무 남발하면 오히려 시스템 성능저하
+2. 자주 접근되는 질의 컬럼에 대하여 제한적으로 생성하여 이용
+
+
+
+
+==============
+3. SYNONYM(동의어)
+==============
+-데이터베이스내에 별명(Alias)를 부여한다
+-사용하는데 별다른 제약없이 자유롭게 그러나 체계적으로 사용한다
+
+CREATE SYNONYM S_emp FOR SCOTT.EMP;
+
+SELECT * FROM S_EMP;
+
+삭제
+DROP SYNONYM S_emp;
+
+
+
+==========
+4. COMMENT
+==========
+
+테이블 혹은 컬럼에 주석을 달아준다
+
+4-1. 테이블 COMMENT
+
+COMMENT ON TABLE 테이블명 IS '내용';
+COMMENT ON TABLE emp IS '사원의 인사정보'; 
+
+SELECT TABLE_NAME, COMMENTS
+  FROM ALL_TAB_COMMENTS;
+
+
+4-2. 필드 COMMENT
+
+COMMENT ON COLUMN 테이블명.필드명 IS '내용';
+
+----->
+COMMENT ON COLUMN emp.empno IS '사원번호';
+COMMENT ON COLUMN emp.ename IS '사원이름';
+COMMENT ON COLUMN emp.job IS '직책';
+COMMENT ON COLUMN emp.mgr IS '관리자';
+COMMENT ON COLUMN emp.hiredate IS '입사일';
+COMMENT ON COLUMN emp.sal IS '급여';
+COMMENT ON COLUMN emp.comm IS '업무추진비';
+COMMENT ON COLUMN emp.deptno IS '근무부서';
+
+SELECT *
+  FROM ALL_COL_COMMENTS
+ WHERE TABLE_NAME = 'EMP';
+
+SELECT COLUMN_NAME, COMMENTS
+  FROM  ALL_COL_COMMENTS
+ WHERE TABLE_NAME = 'EMP';
+
+SELECT TABLE_NAME, COMMENTS
+  FROM USER_COL_COMMENTS;
+
+
+
+
+
+
+*******************************************************
+과제
+*******************************************************
+
+1. 다음과 같이 출력되는 뷰를 만드시오
+
+SELECT * FROM DEPT_SUM;
+
+부서이름           최소급여     최고급여    평균급여
+--------------     ----------    ----------   ----------
+ACCOUNTING     1300         5000         2800
+RESEARCH           800         3000         2175
+SALES                 950         2850         1566.7
+
+CREATE OR REPLACE VIEW DEPT_SUM AS
+SELECT
+    D.DNAME AS 부서이름,
+    MIN(E.SAL) AS 최소급여,
+    MAX(E.SAL) AS 최고급여,
+    ROUND(AVG(E.SAL), 1) AS 평균급여
+FROM
+    EMP E
+    JOIN DEPT D ON E.DEPTNO = D.DEPTNO
+GROUP BY
+    D.DNAME;
+
+2. 다음과 같이 출력되는 뷰를 만드시오
+
+CREATE VIEW EMP_COMMENTS AS
+SELECT E.COLUMN_NAME AS 컬럼명, E.COMMENTS AS 코멘트
+FROM ALL_COL_COMMENTS E
+WHERE TABLE_NAME = 'EMP';
+
+SELECT * FROM emp_comments;
+
+컬럼명                         코멘트
+------------------           --------------------
+EMPNO                        사원번호
+ENAME                        사원이름
+JOB                             직책
+MGR                           관리자
+HIREDATE                    입사일
+SAL                             급여
+COMM                        업무추진비
+DEPTNO                      근무부서
+
+COMMENT ON COLUMN EMP.EMPNO IS '사원번호';
+COMMENT ON COLUMN EMP.ENAME IS '사원이름';
+COMMENT ON COLUMN EMP.JOB IS '직책';
+COMMENT ON COLUMN EMP.MGR IS '관리자';
+COMMENT ON COLUMN EMP.HIREDATE IS '입사일';
+COMMENT ON COLUMN EMP.SAL IS '급여';
+COMMENT ON COLUMN EMP.COMM IS '업무추진비';
+COMMENT ON COLUMN EMP.DEPTNO IS '근무부서';
