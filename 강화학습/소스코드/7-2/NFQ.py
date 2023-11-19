@@ -154,20 +154,23 @@ class NFQ():
         result[:] = np.nan
         training_time = 0
 
+        # 에피소드 횟수 만큼 반복
         for episode in range(1, max_episodes + 1):
-            episode_start = time.time()
-            start, done = env.reset(seed=self.seed), False
+            episode_start = time.time()                     # 에피소드 시작시 시간 체크
+            start, done = env.reset(seed=self.seed), False  # 환경 초기화
             state = start[0]
             self.episode_reward.append(0.0)
             self.episode_timestep.append(0.0)
             self.episode_exploration.append(0.0)
 
+            # 종료 상태 도달 전까지 반복
             while not done:
-                state, done = self.interaction_step(state, env)
+                state, done = self.interaction_step(state, env) # step 진행
 
+                # 배치사이즈 만큼 step 기록을 저장
                 if len(self.experiences) >= self.batch_size:
                     experiences = np.array(self.experiences, dtype=object)
-                    batches = [np.vstack(sars) for sars in experiences.T]
+                    batches = [np.vstack(sars) for sars in experiences.T] # T는 전치연산
                     experiences = self.online_model.load(batches)
 
                     for _ in range(self.epochs):
@@ -175,6 +178,7 @@ class NFQ():
                     
                     self.experiences.clear()
 
+            # 종료 상태 도달시 결과 계산 시작
             episode_elapsed = time.time() - episode_start
             self.episode_seconds.append(episode_elapsed)
             training_time += episode_elapsed
