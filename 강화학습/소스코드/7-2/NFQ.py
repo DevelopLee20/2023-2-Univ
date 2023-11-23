@@ -236,31 +236,35 @@ class NFQ():
 
         return result, final_eval_score, training_time, wallclock_time
         
+    # 에피소드 및 훈련 종료 후 그리디 전략으로 보상을 계산하는 메소드
     def evaluate(self, eval_policy_model, eval_env, n_episodes=1):
-        rs = []
+        rs = [] # 보상 리스트 초기화
 
-        for _ in range(n_episodes):
-            s, done = eval_env.reset(), False
-            s = s[0]
-            rs.append(0)
+        for _ in range(n_episodes):             # 에피소드 만큼 반복
+            s, done = eval_env.reset(), False   # 환경 초기화
+            s = s[0]                            # 상태 저장
+            rs.append(0)                        # 보상 리스트에 공간 할당
 
+            # 에피소드 종료시까지 반복
             while not done:
-                a = self.evaluation_strategy.select_action(eval_policy_model, s)
-                s, r, terminated, truncated, info = eval_env.step(a)
-                done = terminated or truncated
-                rs[-1] += r
+                a = self.evaluation_strategy.select_action(eval_policy_model, s) # 행동을 선택
+                s, r, terminated, truncated, info = eval_env.step(a)             # 하나의 스텝 진행
+                done = terminated or truncated                                   # 종료 여부 판단
+                rs[-1] += r                                                      # 리스트 끝에 계산된 보상 저장
         
-        return np.mean(rs), np.std(rs)
+        return np.mean(rs), np.std(rs)  # 보상의 평균값과 표준값을 반환
 
+    # 학습 후 그리디 전략으로 렌더링 해주는 메소드
     def render_after_train(self, r_env, n_episodes=1):
-        for _ in range(n_episodes):
-            s, done = r_env.reset(), False
-            s = s[0]
+        for _ in range(n_episodes):         # 에피소드 횟수만큼 반복
+            s, done = r_env.reset(), False  # 환경 초기화
+            s = s[0]                        # 상태 저장
 
+            # 에피소드 종료시까지 반복
             while not done:
-                a = self.evaluation_strategy.select_action(self.online_model, s)
-                s, r, terminated, truncated, info = r_env.step(a)
-                done = terminated or truncated
+                a = self.evaluation_strategy.select_action(self.online_model, s)    # 행동 선택
+                s, r, terminated, truncated, info = r_env.step(a)                   # 스텝 진행
+                done = terminated or truncated                                      # 종료 여부 반환
 
 nfq_results = []
 SEEDS = (12, 34, 56, 78, 90)
