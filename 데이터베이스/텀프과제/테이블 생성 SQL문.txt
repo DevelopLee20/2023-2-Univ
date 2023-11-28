@@ -1,0 +1,141 @@
+CREATE TABLE 학과(
+학과이름 VARCHAR(20) NOT NULL,
+단과대학 VARCHAR(20) NOT NULL,
+과사무실 VARCHAR(10),
+CONSTRAINT 학과_PK PRIMARY KEY(학과이름)
+);
+
+CREATE TABLE 교수(
+교수번호 VARCHAR(20) NOT NULL,
+이름 VARCHAR(20) NOT NULL,
+비밀번호 VARCHAR(64) NOT NULL,
+학과이름 VARCHAR(20) NOT NULL,
+CONSTRAINT 교수_PK PRIMARY KEY(교수번호),
+CONSTRAINT 교수_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름)
+);
+
+CREATE TABLE 학생(
+학번 VARCHAR(20) NOT NULL,
+이름 VARCHAR(20) NOT NULL,
+학년 VARCHAR(1) NOT NULL,
+비밀번호 VARCHAR(64) NOT NULL,
+지도교수 VARCHAR(20) NOT NULL,
+학과이름 VARCHAR(20) NOT NULL,
+CONSTRAINT 학생_PK PRIMARY KEY(학번),
+CONSTRAINT 학생_교수_FK FOREIGN KEY(지도교수) REFERENCES 교수(교수번호),
+CONSTRAINT 학생_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름)
+);
+
+CREATE TABLE 과목(
+과목번호 VARCHAR(20) NOT NULL,
+과목이름 VARCHAR(20) NOT NULL,
+대상학년 VARCHAR(1) NOT NULL,
+개설학기 VARCHAR(1) NOT NULL,
+전공구분 VARCHAR(5) NOT NULL,
+이수학점 VARCHAR(10) NOT NULL,
+학과이름 VARCHAR(20) NOT NULL,
+CONSTRAINT 과목_PK PRIMARY KEY(과목번호),
+CONSTRAINT 과목_학과_FK FOREIGN KEY(학과이름) REFERENCES 학과(학과이름)
+);
+
+CREATE TABLE 개설과목(
+과목번호 VARCHAR(20) NOT NULL,
+연도 VARCHAR(4) NOT NULL,
+학기 VARCHAR(1) NOT NULL,
+담당교수 VARCHAR(20) NOT NULL,
+교재 VARCHAR(32),
+CONSTRAINT 개설과목_PK PRIMARY KEY (과목번호, 연도, 학기),
+CONSTRAINT 개설과목_과목_FK FOREIGN KEY (과목번호) REFERENCES 과목(과목번호),
+CONSTRAINT 개설과목_교수_FK FOREIGN KEY (담당교수) REFERENCES 교수(교수번호)
+);
+ 
+CREATE TABLE 수강(
+학번 VARCHAR(20) NOT NULL,
+과목번호 VARCHAR(20) NOT NULL,
+연도 VARCHAR(4) NOT NULL,
+학기 VARCHAR(1) NOT NULL,
+성적 VARCHAR(1),
+CONSTRAINT 수강_PK PRIMARY KEY(학번, 과목번호, 연도, 학기),
+CONSTRAINT 수강_학생_FK FOREIGN KEY(학번) REFERENCES 학생(학번),
+CONSTRAINT 수강_개설과목_FK FOREIGN KEY(과목번호) REFERENCES 과목(과목번호)
+);
+
+CREATE TABLE 상담(
+학번 VARCHAR(20) NOT NULL,
+상담일자 DATE NOT NULL,
+상담내용 LONG NOT NULL,
+CONSTRAINT 상담_PK PRIMARY KEY(학번, 상담일자),
+CONSTRAINT 상담_학생_FK FOREIGN KEY(학번) REFERENCES 학생(학번)
+);
+
+CREATE SEQUENCE 학생_학번_seq
+START WITH 2023001
+INCREMENT BY 1
+MINVALUE 2023001
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE 교수_교수번호_seq
+START WITH 101
+INCREMENT BY 1
+MINVALUE 101
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE 과목_과목번호_seq
+START WITH 101
+INCREMENT BY 1
+MINVALUE 101
+NOCACHE
+NOCYCLE;
+
+CREATE OR REPLACE TRIGGER 상담_자동날짜
+BEFORE INSERT ON 상담
+FOR EACH ROW
+BEGIN
+  :NEW.상담일자 := SYSDATE;
+END;
+/
+
+INSERT INTO 학과 VALUES ('컴퓨터공학과','공과대학','M609');
+INSERT INTO 학과 VALUES ('전기공학과','공과대학','M509');
+INSERT INTO 학과 VALUES ('전자공학과','공과대학','M109');
+INSERT INTO 교수 VALUES (101, '이해각','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (102, '홍인식','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (103, '천인국','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (201, '차귀수','0000', '전기공학과');
+INSERT INTO 교수 VALUES (202, '전창완','0000', '전기공학과');
+INSERT INTO 교수 VALUES (203, '임종식','0000', '전기공학과');
+INSERT INTO 교수 VALUES (301, '박광민','0000', '전기공학과');
+INSERT INTO 교수 VALUES (302, '김은성','0000', '전기공학과');
+INSERT INTO 교수 VALUES (303, '김두용','0000', '전기공학과');
+INSERT INTO 학생 VALUES (200050100, '김유신', '1', '0000', 101, '컴퓨터공학과');
+INSERT INTO 학생 VALUES (200050101, '강감찬', '2', '0000', 101, '컴퓨터공학과');
+INSERT INTO 학생 VALUES (200050102, '이율곡', '1', '0000', 201, '전기공학과');
+INSERT INTO 학생 VALUES (200050103, '이순신', '1', '0000', 301, '전기공학과');
+INSERT INTO 학생 VALUES (200050104, '이사부', '1', '0000', 302, '전기공학과');
+INSERT INTO 학생 VALUES (20204062, '이인규', '3', '0000', 101, '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_001', '화일처리', '3', '1', '전공', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_002','선형대수', '1', '1', '학초', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_003', '진로개발', '1', '1', '교양', '1', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_004', '데이터베이스', '3', '1', '전공', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_005', '컴퓨터네트워크', '3', '1', '전공', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('전기공학_C_001', '전기처리', '1', '1', '전공', '3', '전기공학과');
+INSERT INTO 과목 VALUES ('전기공학_C_002', '전기이론', '2', '1', '전공', '3', '전기공학과');
+INSERT INTO 수강 VALUES (200050100, '컴퓨터공학_C_001', '2023', '1', 'B');
+INSERT INTO 수강 VALUES (200050100, '컴퓨터공학_C_002', '2023', '1', 'A');
+INSERT INTO 수강 VALUES (20204062, '컴퓨터공학_C_004', '2023', '1', 'A');
+INSERT INTO 수강 VALUES (20204062, '컴퓨터공학_C_005', '2023', '1', NULL);
+INSERT INTO 개설과목 VALUES('컴퓨터공학_C_001', '2023', '2', '101', NULL);
+INSERT INTO 개설과목 VALUES('컴퓨터공학_C_004', '2023', '2', '101', NULL);
+INSERT INTO 개설과목 VALUES('컴퓨터공학_C_005', '2023', '2', '102', '1000페이지 전공책');
+INSERT INTO 개설과목 VALUES('전기공학_C_001', '2023', '2', '201', '콘센트 이론책');
+INSERT INTO 상담 VALUES('20204062', '2020-11-27', '공부하는 방법에 대해 상담');
+
+SELECT * FROM 학과;
+SELECT * FROM 교수;
+SELECT * FROM 학생;
+SELECT * FROM 과목;
+SELECT * FROM 수강;
+SELECT * FROM 개설과목;
+SELECT * FROM 상담;

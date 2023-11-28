@@ -1,0 +1,32 @@
+OleDbCommand cmd = new OleDbCommand();
+String query = $"SELECT * FROM {val} WHERE 학번='{id}' AND 비밀번호='{passwd}'";
+cmd.CommandText = query;
+cmd.CommandType = CommandType.Text;
+String ConnectString = "Provider=MSDAORA;Password=123123;User ID=Term";
+OleDbConnection conn = new OleDbConnection(ConnectString);
+conn.Open();
+cmd.Connection = conn;
+
+INSERT INTO 교수 VALUES (101, '이해각','0000', '컴퓨터공학과');
+INSERT INTO 학생 VALUES (200050100, '김유신', '1', '0000', 101, '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_001', '화일처리', '3', '1', '전공', '3', '컴퓨터공학과');
+
+DELETE FROM 학생 WHERE 학번=0;
+
+SELECT 개설.* FROM 개설과목 개설 INNER JOIN 학생 학 ON 개설.담당교수 = 학.지도교수 INNER JOIN 과목 과 ON 개설.과목번호 = 과.과목번호 WHERE 학.학번 = '20204062' AND 학.학과이름 = 과.학과이름 AND 학.학년 = 과.대상학년;
+
+SELECT 개설.* FROM 개설과목 개설 INNER JOIN 학생 학 ON 개설.담당교수 = 학.지도교수 INNER JOIN 과목 과 ON 개설.과목번호 = 과.과목번호 WHERE 학.학번 = '{main.number}' AND 학.학과이름 = 과.학과이름 AND 학.학년 = 과.대상학년;
+
+INSERT INTO 수강 VALUES('{main.number}', '{textBox2.Text}', '{textBox3.Text}', '{textBox4.Text}', NULL)
+
+SELECT * FROM 수강 WHERE 학번='{main.number}'
+
+DELETE FROM 수강 WHERE 과목번호 = '{textBox1.Text}';
+
+SELECT * FROM 수강 WHERE 과목번호 IN (SELECT 과목번호 FROM 개설과목 WHERE 담당교수 = '{main.number}')
+
+INSERT INTO 상담 VALUES('20204062', '2020-11-27', 'How to Study');
+
+SELECT * FROM 학생 WHERE 지도교수='{main.number}'
+
+SELECT * FROM 상담 WHERE 학번 IN (SELECT 학번 FROM 학생 WHERE 지도교수 = '{main.number}');

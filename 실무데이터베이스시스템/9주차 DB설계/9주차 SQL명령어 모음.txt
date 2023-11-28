@@ -47,31 +47,31 @@ INSERT INTO 학과 VALUES ('컴퓨터공학과','M609');
 INSERT INTO 학과 VALUES ('전기공학과','M509');
 INSERT INTO 학과 VALUES ('전자공학과','M109');
 
-INSERT INTO 교수 VALUES (101, '이해각', '컴퓨터공학과');
-INSERT INTO 교수 VALUES (102, '홍인식', '컴퓨터공학과');
-INSERT INTO 교수 VALUES (103, '천인국', '컴퓨터공학과');
-INSERT INTO 교수 VALUES (201, '차귀수', '전기공학과');
-INSERT INTO 교수 VALUES (202, '전창완', '전기공학과');
-INSERT INTO 교수 VALUES (203, '임종식', '전기공학과');
-INSERT INTO 교수 VALUES (301, '박광민', '전기공학과');
-INSERT INTO 교수 VALUES (302, '김은성', '전기공학과');
-INSERT INTO 교수 VALUES (303, '김두용', '전기공학과');
+INSERT INTO 교수 VALUES (101, '이해각','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (102, '홍인식','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (103, '천인국','0000', '컴퓨터공학과');
+INSERT INTO 교수 VALUES (201, '차귀수','0000', '전기공학과');
+INSERT INTO 교수 VALUES (202, '전창완','0000', '전기공학과');
+INSERT INTO 교수 VALUES (203, '임종식','0000', '전기공학과');
+INSERT INTO 교수 VALUES (301, '박광민','0000', '전기공학과');
+INSERT INTO 교수 VALUES (302, '김은성','0000', '전기공학과');
+INSERT INTO 교수 VALUES (303, '김두용','0000', '전기공학과');
 
-INSERT INTO 학생 VALUES (200050100, '김유신', '컴퓨터공학과', 101);
-INSERT INTO 학생 VALUES (200050101, '강감찬', '컴퓨터공학과', 101);
-INSERT INTO 학생 VALUES (200050102, '이율곡', '전기공학과', 201);
-INSERT INTO 학생 VALUES (200050103, '이순신', '전기공학과', 301);
-INSERT INTO 학생 VALUES (200050104, '이사부', '전기공학과', 302);
+INSERT INTO 학생 VALUES (200050100, '김유신', '1', '0000', 101, '컴퓨터공학과');
+INSERT INTO 학생 VALUES (200050101, '강감찬', '2', '0000', 101, '컴퓨터공학과');
+INSERT INTO 학생 VALUES (200050102, '이율곡', '1', '0000', 201, '전기공학과');
+INSERT INTO 학생 VALUES (200050103, '이순신', '1', '0000', 301, '전기공학과');
+INSERT INTO 학생 VALUES (200050104, '이사부', '1', '0000', 302, '전기공학과');
+INSERT INTO 학생 VALUES (20204062, '이인규', '3', '0000', 101, '컴퓨터공학과');
 
-INSERT INTO 과목 VALUES ('화일처리', '전공', '컴퓨터공학과', 102);
-INSERT INTO 과목 VALUES ('선형대수', '학초', '컴퓨터공학과', 103);
-INSERT INTO 과목 VALUES ('진로개발', '교양', '컴퓨터공학과', 101);
-INSERT INTO 과목 VALUES ('데이터베이스', '전공', '컴퓨터공학과', 101);
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_001', '화일처리', '3', '1', '전공', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_002','선형대수', '1', '1', '학초', '3', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_003', '진로개발', '1', '1', '교양', '1', '컴퓨터공학과');
+INSERT INTO 과목 VALUES ('컴퓨터공학_C_004', '데이터베이스', '3', '1', '전공', '3', '컴퓨터공학과');
 
-INSERT INTO 수강 VALUES (200050100, '데이터베이스', 80);
-INSERT INTO 수강 VALUES (200050100, '화일처리', 90);
-INSERT INTO 수강 VALUES (200050101, '데이터베이스', 70);
-INSERT INTO 수강 VALUES (200050101, '화일처리', 100);
+INSERT INTO 수강 VALUES (200050100, '컴퓨터공학_C_001', '2023', '1', 'B');
+INSERT INTO 수강 VALUES (200050100, '컴퓨터공학_C_002', '2023', '1', 'A');
+INSERT INTO 수강 VALUES (20204062, '컴퓨터공학_C_004', '2023', '1', 'A');
 
 SELECT * FROM 교수;
 SELECT * FROM 학생;
