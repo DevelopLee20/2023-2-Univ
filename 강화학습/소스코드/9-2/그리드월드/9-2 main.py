@@ -67,7 +67,6 @@ class FCDAP(nn.Module):
 
         return action.item(), is_exploratory.item(), logpa # 행동과 탐색 여부, 로그 값 반환
     
-    
     def select_action(self, state): # 행동 선택 메소드
         logits = self.forward(state)    # 순전파 진행 후 저장
         # 순전파를 바탕으로 행동 카테고리형 확률 분포 생성

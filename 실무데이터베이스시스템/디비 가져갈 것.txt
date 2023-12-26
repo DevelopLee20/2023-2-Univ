@@ -1,0 +1,122 @@
+﻿set linesize 100
+
+CREATE TABLE 부서(
+부서번호 NUMBER(3),
+부서이름 VARCHAR(10),
+부서인원수 NUMBER(3),
+CONSTRAINT 부서_PK PRIMARY KEY(부서번호)
+);
+
+CREATE TABLE 사원(
+사원번호 NUMBER(3),
+사원이름 VARCHAR(10),
+부서번호 NUMBER(3),
+급여 NUMBER(5),
+입사일 DATE,
+CONSTRAINT 사원_PK PRIMARY KEY(사원번호),
+CONSTRAINT 사원_부서_FK FOREIGN KEY(부서번호) REFERENCES 부서(부서번호)
+);
+
+SELECT * FROM 부서;
+SELECT * FROM 사원;
+DESC 부서;
+DESC 사원;
+
+INSERT INTO 부서 VALUES (301, '부서1', 0);
+INSERT INTO 부서 VALUES (302, '부서2', 0);
+INSERT INTO 부서 VALUES (303, '부서3', 0);
+INSERT INTO 사원 VALUES (101, '사원1', 301, 1000, TO_DATE('18-05-03', 'YY-MM-DD'));
+INSERT INTO 사원 VALUES (102, '사원2', 302, 2500, TO_DATE('12-11-13', 'YY-MM-DD'));
+INSERT INTO 사원 VALUES (103, '사원3', 302, 1600, TO_DATE('16-12-20', 'YY-MM-DD'));
+INSERT INTO 사원 VALUES (104, '사원4', 303, 3000, TO_DATE('10-01-23', 'YY-MM-DD'));
+INSERT INTO 사원 VALUES (105, '사원5', 301, 2200, TO_DATE('17-12-11', 'YY-MM-DD'));
+
+SELECT * FROM 부서;
+SELECT * FROM 사원;
+
+UPDATE 부서 SET 부서인원수 = (SELECT COUNT(*) FROM 사원 WHERE 사원.부서번호 = 부서.부서번호);
+
+SELECT * FROM 부서;
+
+SELECT 부서이름, AVG(급여) AS 평균급여
+FROM 사원
+JOIN 부서 ON 사원.부서번호 = 부서.부서번호
+GROUP BY 부서이름
+ORDER BY 부서이름 ASC;
+
+DESC
+
+CREATE OR REPLACE VIEW 사원정보 AS
+SELECT 사원이름, 부서이름, 급여
+FROM 사원
+JOIN 부서 ON 사원.부서번호 = 부서.부서번호;
+
+SELECT * FROM 사원정보;
+
+SELECT
+사원1.부서번호,
+사원1.사원이름 AS 사원이름1,
+사원2.사원이름 AS 사원이름2
+FROM 사원 사원1
+JOIN 사원 사원2 ON 사원1.부서번호 = 사원2.부서번호 AND 사원1.사원번호 < 사원2.사원번호
+ORDER BY 부서번호 ASC;
+
+CREATE OR REPLACE TRIGGER TR_부서인원수
+AFTER INSERT ON 사원
+FOR EACH ROW
+BEGIN
+    UPDATE 부서
+    SET 부서인원수 = 부서인원수 + 1
+    WHERE :NEW.부서번호 = 부서번호;
+END;
+/
+
+INSERT INTO 사원 VALUES (106, '사원6', 301, 1200, TO_DATE('16-11-03','YY-MM-DD'));
+SELECT * FROM 사원;
+SELECT * FROM 부서;
+
+DROP TRIGGER TR_부서인원수;
+DROP VIEW 사원정보;
+DROP TABLE 사원;
+DROP TABLE 부서;
+
+-------------------------------------------------------------------
+
+SCOTT>select avg(sal), ceil(avg(sal)), floor(avg(sal)) from emp;
+
+  AVG(SAL) CEIL(AVG(SAL)) FLOOR(AVG(SAL))                                                                               
+---------- -------------- ---------------                                                                               
+2098.33333           2099            2098    
+
+SCOTT>select avg(sal), round(avg(sal), 2), trunc(avg(sal),2) from emp;
+
+  AVG(SAL) ROUND(AVG(SAL),2) TRUNC(AVG(SAL),2)                                                                          
+---------- ----------------- -----------------                                                                          
+2098.33333           2098.33           2098.33         
+
+SCOTT>select lpad(ename, 10, '*')
+  2  from emp;
+
+LPAD(ENAME,10,'*')                                                                                                      
+--------------------                                                                                                    
+****LEE_HK                                                                                                              
+*****SMITH                                                                                                              
+*****ALLEN               
+
+SCOTT>select rpad(ename, 10, '*')
+  2  from emp;
+
+RPAD(ENAME,10,'*')                                                                                                      
+--------------------                                                                                                    
+LEE_HK****                                                                                                              
+SMITH*****                                                                                                              
+ALLEN*****                  
+
+SCOTT>select concat(initcap(ename), lower(job))
+  2  from emp;
+
+CONCAT(INITCAP(ENAM                                                                                                     
+-------------------                                                                                                     
+Lee_Hkmanager                                                                                                           
+Smithclerk                      
+
